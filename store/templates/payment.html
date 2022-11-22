@@ -1,0 +1,260 @@
+
+
+
+{% load static %}
+<head>
+  <title>Payment Page</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="apple-touch-icon" href="assets/img/apple-icon.png">
+  <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico">
+
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %} ">
+  <link rel="stylesheet" href="{% static 'css/templatemo.css' %} ">
+  <link rel="stylesheet" href="{% static ' css/custom.css' %}">
+  <!-- CSS -->
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+<!-- Default theme -->
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
+    
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <!-- Load fonts style after rendering the layout styles -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;700;900&display=swap">
+  <link rel="stylesheet" href="{% static 'css/fontawesome.min.css' %} ">
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  {% comment %} RazorPay {% endcomment %}
+  {% comment %} <script src="{% static 'js/checkout.js' %}"></script> {% endcomment %}
+  <script src="{% static 'js/payment.js' %}"></script>
+</head>
+ 
+
+<section style="background-color: #fff;">
+  
+  <div class="container py-5">
+    
+    <div class="row d-flex justify-content-center">
+      <div class="col-md-12 col-lg-10 col-xl-8">
+        <div class="card">
+          <div class="card-body p-md-5">
+            <div>
+              <div class= "">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Price details</h4>
+                    </div>
+                
+                    <div class="card-body">
+                      <form action="checkout" method="POST">
+                        {% csrf_token %}
+                        {% if code %}
+                        <table class="table">
+                            <tr>
+                                <td>Subtotal</td>
+                                {% if subtotal %}
+                                <td>₹{{subtotal}}/-</td>
+                                {% else %}
+                                <td>₹{{price}}/-</td>
+                                {% endif %}
+                            </tr>
+                            <tr>
+                                <td>Shipping</td>
+                                <td>Free</td>
+                            </tr>
+                            <input type="hidden" name="amount" value="{{total}}" id="amount">
+                            <input type="hidden" name="cart" value="{{cart}}" id ="cart">
+                            <input type="hidden" name="payment" value="Cash on Delivery" id ="cart">
+                            <input type="hidden" name="address_id" value="{{addresses.id}}" id ="address">
+                            <input type="hidden" name="amount" value="{{total}}" id="amount">
+
+                            <tr style="background-color: rgba(0,0,0,.03)">
+                              <td><input readonly type="text" style="width:50%" name="code" id="code" placeholder="Enter Coupon code" class="form-control w-100"></td>
+                              <td><button type="button" disabled class="btn btn-primary mx-2 ">Apply</button></td>
+                          </tr>
+                         
+                          {% if message == 'Minimum Amount is not reached' %}
+                          <p class="text-danger">{{message}}</p>
+                          {% else %}
+                          <p class="text-success">You applied the coupon code {{code}} </p>
+                          {% endif %}
+                       
+
+
+                            <tr>
+                                <td>Total</td>
+                                {% if total %}
+                                <td>₹{{total}}/-</td>
+                                {% else %}
+                                <td>₹{{price}}/-</td>
+                                {% endif %}
+                            </tr>
+                        </table>
+                        {% else %}
+                        <table class="table">
+                          <tr>
+                              <td>Subtotal</td>
+                              {% if subtotal %}
+                              <td>₹{{subtotal}}/-</td>
+                              {% else %}
+                              <td>₹{{price}}/-</td>
+                              {% endif %}
+                          </tr>
+                          <tr>
+                              <td>Shipping</td>
+                              <td>Free</td>
+                          </tr>
+                          <input type="hidden" name="amount" value="{{total}}" id="amount">
+                          <input type="hidden" name="cart" value="{{cart}}" id ="cart">
+                          <input type="hidden" name="payment" value="Cash on Delivery" id ="cart">
+                          <input type="hidden" name="address" value="{{addresses.id}}" id ="address">
+                          <input type="hidden" name="amount" value="{{total}}" id="amount">
+
+                          <tr style="background-color: rgba(0,0,0,.03)">
+                            <td><input type="text" style="width:50%" name="code" id="code" placeholder="Enter Coupon code" class="form-control w-100"></td>
+                            <td><button type="submit" class="btn btn-primary mx-2 ">Apply</button></td>
+                        </tr>
+                          
+                          <tr>
+                              <td>Total</td>
+                              {% if total %}
+                              <td>₹{{total}}/-</td>
+                              {% else %}
+                              <td>₹{{price}}/-</td>
+                              {% endif %}
+                          </tr>
+                          {% endif %}
+                      </table>
+
+
+
+                      </form> 
+                        
+                    </div>
+                  
+                   
+                </div>
+            </div>
+            <form action="payment" method = "POST">
+              {% csrf_token %}
+              <input type="hidden" name="amount" value="{{total}}" id="amount">
+              <input type="hidden" name="cart" value="{{cart}}" id ="cart">
+              <input type="hidden" name="payment" value="Cash on Delivery" id ="cart">
+              <input type="hidden" name="address" value="{{addresses.id}}" id ="address">
+              
+              
+              
+            <h4 class="mt-5">Payment Methods</h4>
+
+            <div class="mt-4 d-flex justify-content-between align-items-center ">
+              <button type="submit " class="btn text-light mt-1" style="width: 50%; background:#1C3879;">Cash On Delivery</button>
+            </div>
+            <div class="mt-4 d-flex justify-content-between align-items-center">
+              <button type="button " class="btn btn-primary text-light mt-1 payWithRazorpay" style="width: 50%;">Pay With Razorpay</button>
+            </div>
+            {% comment %} <button type="button" class="btn btn-primary payWithRazorpay w-50 m-1"  data-toggle="modal" data-target="#exampleModal">
+              Pay With Razorpay
+              
+            </button> {% endcomment %}
+
+            
+
+            <div class="mt-2 d-flex justify-content-between align-items-center">
+              
+            <div class ="mt-2 btn" style="width: 55%;"  id="paypal-button-container"></div>
+             
+            </div>
+           </form>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</head>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="https://www.paypal.com/sdk/js?client-id=AShn40Fb_4dIhXOVfYkbn6kDhmAI5iWBBVrXvzTNws_hwWxsgxZX_bbbSol6Dnd3P4f6EpCOjIf40Yaz&currency=USD"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+<script src="{% static "payment.js" %}"></script>
+
+<script>
+  paypal.Buttons({
+    //onclick: function(data, actions) {
+     // return actions.resolve();
+      
+    //},
+    // Sets up the transaction when a payment button is clicked
+    createOrder: (data, actions) => {
+      return actions.order.create({
+        purchase_units: [{
+          amount: {
+            value: '0.01' // Can also reference a variable or function
+          }
+        }]
+      });
+    },
+    // Finalize the transaction after payer approval
+    onApprove: (data, actions) => {
+      return actions.order.capture().then(function(orderData) {
+        console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+        
+        var total = $('#amount').val()
+        var amount = $('#amount').val()
+        var cart = $('#cart').val()
+        var address = $('#address').val()
+        var payment = "PayPal"
+        var token = $("input[name='csrfmiddlewaretoken']").val()
+        
+        $.ajax({
+          url: "payment",
+          type: "POST",
+          data: {
+            'csrfmiddlewaretoken': token,
+            'amount': amount,
+            'cart': cart,
+            'address': address,
+            'payment': payment,
+          },
+          success: function(response) {
+            console.log(response)
+            
+              swal({
+                title: "Payment Successful",
+                text: "Your payment is successful",
+                icon: "success",
+                button: "OK",
+              }).then(function() {
+                window.location.href = "/";
+              });
+           
+          }
+        })
+
+        //data = {
+        //  'total': total,
+        //  'cart': cart,
+        //  'address': address,
+        //  'payment': payment,
+        //  'csrfmiddlewaretoken': token,
+        //}
+        // Successful capture! For dev/demo purposes:
+        //console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+        //const transaction = orderData.purchase_units[0].payments.captures[0];
+        //alert(`Transaction ${transaction.status}: ${transaction.id}\n\nSee console for all available details`);
+        // When ready to go live, remove the alert and show a success message within this page. For example:
+        // const element = document.getElementById('paypal-button-container');
+        // element.innerHTML = '<h3>Thank you for your payment!</h3>';
+        // Or go to another URL:  actions.redirect('thank_you.html');
+      });
+    }
+  }).render('#paypal-button-container');
+    
+    function alreadyApplied(){
+        swal("Already Applied", "You have already applied the code", "error");
+    }
+  </script>
+
+

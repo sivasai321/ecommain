@@ -1,0 +1,154 @@
+
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Home Page{% endblock title %}
+{% block content %}
+    <!-- Start Banner Hero -->
+    <div id="template-mo-zay-hero-carousel" class="carousel slide" data-bs-ride="carousel">
+        <ol class="carousel-indicators">
+            <li data-bs-target="#template-mo-zay-hero-carousel" data-bs-slide-to="0" class="active"></li>
+            <li data-bs-target="#template-mo-zay-hero-carousel" data-bs-slide-to="1"></li>
+            <li data-bs-target="#template-mo-zay-hero-carousel" data-bs-slide-to="2"></li>
+        </ol>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <div class="container">
+                    <div class="row p-5">
+                        <div class="mx-auto col-md-8 col-lg-6 order-lg-last">
+                            <img class="img-fluid" src="{% static 'img/AirJordans.png' %} " alt="">
+                        </div>
+                        <div class="col-lg-6 mb-0 d-flex align-items-center">
+                            <div class="text-align-left align-self-center">
+                                <h1 class="h1">Nike</h1>
+                                <h3 class="h2">Air Jordans Ones</h3>
+                                <p>
+                                  Though born to celebrate one man, Michael Jordan, Jordan Brand has since become a pillar of inclusivity, 
+                                  its family now many numbers strong.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="container">
+                    <div class="row p-5">
+                        <div class="mx-auto col-md-8 col-lg-6 order-lg-last">
+                            <img class="img-fluid w-100" src="{% static 'img/casualshoes.png' %} " alt="">
+                        </div>
+                        <div class="col-lg-6 mb-0 d-flex align-items-center">
+                            <div class="text-align-left">
+                                <h1 class="h1">Gucci</h1>
+                                <h3 class="h2">Arrancar</h3>
+                                <p>
+                                  Timeless designs pay homage to a wardrobe that transcend seasons. Crafted from brown leather, 
+                                  this formal shoe pairs 
+                                  a minimalist silhouette with a subtle logo detail at the back heel.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="container">
+                    <div class="row p-5">
+                        <div class="mx-auto col-md-8 col-lg-6 order-lg-last">
+                            <img class="img-fluid "  src="{% static 'img/run1.png' %}" alt=""/>
+                        </div>
+                        <div class="col-lg-6 mb-0 d-flex align-items-center">
+                            <div class="text-align-left">
+                                <h1 class="h1">Skechers</h1>
+                                <h3 class="h2">Lupis Regina</h3>
+                                <p>
+                                  Maximize your workouts in all-day cushioned comfort with Skechers Max Cushioning Arch Fit®. 
+                                  This athletic lace-up features an engineered mesh upper with removable
+                                   Arch Fit® insole and a lightweight ULTRA GO® cushioned midsole.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a class="carousel-control-prev text-decoration-none w-auto ps-3" href="#template-mo-zay-hero-carousel" role="button" data-bs-slide="prev">
+            <i class="fas fa-chevron-left"></i>
+        </a>
+        <a class="carousel-control-next text-decoration-none w-auto pe-3" href="#template-mo-zay-hero-carousel" role="button" data-bs-slide="next">
+            <i class="fas fa-chevron-right"></i>
+        </a>
+    </div>
+    <!-- End Banner Hero -->
+
+
+    <!-- Start Categories of The Month -->
+    <section class="container py-5">
+        <div class="row text-center pt-3">
+            <div class="col-lg-6 m-auto">
+                <h1 class="h1">Featured Products</h1>
+                <p>
+                    Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+                    deserunt mollit anim id est laborum.
+                </p>
+            </div>
+        </div>
+        {% comment %} <div class="row">
+          {% for item in category %}
+            <div class="col-12 col-md-4 p-5 mt-3">
+                <a href="collectionsview?id={{item.id}} "><img src="{{item.image.url}}" class="rounded-circle img-fluid border"></a>
+                <h5 class="text-center mt-3 mb-3">{{ item.name }}</h5>
+                <p class="text-center"><a class="text-success" href="collectionsview?id={{item.id}}" >Go Shop</a></p>
+            </div>
+            {% endfor %}
+        </div> {% endcomment %}
+    </section>
+    <!-- End Categories of The Month -->
+
+
+    {% comment %} <!-- Start Featured Product -->
+    <section class="bg-light">
+        <div class="container py-5">
+            <div class="row text-center py-3">
+                <div class="col-lg-6 m-auto">
+                    <h1 class="h1">Featured Product</h1>
+                    <p>
+                        Reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                        Excepteur sint occaecat cupidatat non proident.
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-md-4 mb-4">
+                    <div class="card h-100">
+                        <a href="shop-single.html">
+                            <img src="./assets/img/feature_prod_01.jpg" class="card-img-top" alt="...">
+                        </a>
+                        <div class="card-body">
+                            <ul class="list-unstyled d-flex justify-content-between">
+                              <!-- cash and card content -->
+                                <li class="text-muted text-right">$240.00</li>
+                            </ul>
+                            <a href="shop-single.html" class="h2 text-decoration-none text-dark">Gym Weight</a>
+                            <p class="card-text">
+                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt in culpa qui officia deserunt.
+                            </p>
+                          
+                        </div>
+                    </div>
+                </div>
+                
+               
+            </div>
+        </div>
+    </section> {% endcomment %}
+    <!-- End Featured Product -->
+
+
+    <!-- Start Script -->
+    <script src="{% static 'js/jquery-1.11.0.min.js' %} "></script>
+    <script src="{% static 'js/jquery-migrate-1.2.1.min.js'%} "></script>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %} "></script>
+    <script src="{% static ' js/templatemo.js' %}"></script>
+    <script src="{% static ' js/custom.js' %}"></script>
+    <!-- End Script -->
+    {% endblock content %}

@@ -1,0 +1,134 @@
+
+
+{% load static %}
+
+<head>
+  <title>Category Management</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="apple-touch-icon" href="assets/img/apple-icon.png">
+  <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico">
+
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %} ">
+  <link rel="stylesheet" href="{% static 'css/templatemo.css' %} ">
+  <link rel="stylesheet" href="{% static ' css/custom.css' %}">
+  <!-- CSS -->
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+<!-- Default theme -->
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
+
+
+  <!-- Load fonts style after rendering the layout styles -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;700;900&display=swap">
+  <link rel="stylesheet" href="{% static 'css/fontawesome.min.css' %} ">
+
+</head>
+
+<body>
+ 
+
+  <!-- Header -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-dark text-light shadow">
+    <div class="container d-flex justify-content-between align-items-center">
+  
+        <a class="navbar-brand text-  logo h1 align-self-center" href="#">
+          <img class="img-fluid " style="height:50px" src="{% static 'img/adlogo.png' %} " alt="">
+        </a>
+  
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#templatemo_main_nav" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+  
+        <div class="align-self-center collapse navbar-collapse flex-fill  d-lg-flex justify-content-lg-between" id="templatemo_main_nav">
+            <div class="flex-fill">
+                <ul class="nav navbar-nav d-flex justify-content-between mx-lg-auto">
+                   
+                  <li class="nav-item">
+                    <a class="nav-link text-white" href="dashboard">Home</a>
+                </li>
+                  
+                  <li class="nav-item ">
+                        <a class="nav-link text-white" href="users">Users</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link text-white" href="orders">Category</a>
+                  </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="products">Products</a>
+                    </li>
+                   
+                    <li class="nav-item">
+                      <a class="nav-link text-white" href="coupons">Coupons</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link text-white" href="offers">Offers</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link text-white" href="orders">Orders</a>
+              </li>
+                </ul>
+            </div>
+            <div class="navbar align-self-center d-flex">
+                <div class="d-lg-none flex-sm-fill mt-3 mb-4 col-7 col-sm-auto pr-3">
+                    
+                </div>
+                      
+                <a class="nav-icon position-relative text-decoration-none" href="adminlogout">
+                    <i class="fa fa-fw fa-user text-white mr-3 " style="width:100px;"></i>
+                    <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">{{user.username}}</span>
+                </a>
+            </div>
+        </div>
+  
+    </div>
+  </nav>
+  <!-- Navbar -->  
+
+<div class="container">
+
+        
+    <div class="col-md-8 my-4" style="width:auto;">
+        <div class="card">
+            <div class="card-header d-flex">
+                <div style="width:85%">
+                <h4>Category Management</h4>
+                </div>
+                <div >
+                <a class="btn btn-success " href ="addcategory">Add Category</a>
+                </div>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Slug ID</th>
+                            <th>Name</th>
+                            <th>Category Image</th>
+                            <th></th>
+                            
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for category in categories %}
+                        <tr>
+                            <td>{{category.slug}}</td>
+                            <td>{{category.name}}</td>
+                            <td><img src="{{category.image.url}}" alt="" class = "img-fluid" style="width:100px; height:100px;"></td>
+                            <td>
+                               <a style="" class="btn btn-danger" href= "delete_category?id={{category.id}}"><i style=""onclick="return confirm('Are you sure to Delete '+' {{category.name}} ?')"</i>
+                                    DELETE</a></td>
+                            <td>
+                        {% endfor %}   
+                       
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'main.js' %}"></script>
+

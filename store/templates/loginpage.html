@@ -1,0 +1,84 @@
+{% comment %} NEW LOGIN UI {% endcomment %}
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/l1.png' %} ">  <!-- browswer tab logo -->
+  <title>
+  {% block title %}Login Page{% endblock title %}
+   </title>
+
+ 
+   <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+   <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+   <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+   
+  
+   <link rel="stylesheet" href="{% static 'css/formboth.css' %}">
+{% comment %} 
+   <link rel="stylesheet" href="{% static 'css/formboth.css' %}"> {% endcomment %}
+</head>
+
+<body>
+   
+	<div class="wrapper">
+        <div class="logo">
+			<img src="{% static 'img/l1.png' %}" alt="My image">
+        </div>
+        <div class="text-center mt-4 name">
+            LOGIN TO ACCOUNT
+        </div>
+		<form class="form p-3 mt-3" method="post" action="loginpage">
+			{% csrf_token %}
+        
+            <div class="form-field d-flex align-items-center">
+                <span class="far fa-user"></span>
+                <input type="text" name="username" id="username" placeholder="Username">
+            </div>
+            <div class="form-field d-flex align-items-center">
+                <span class="fas fa-key"></span>
+                <input type="password" name="password" id="password" placeholder="Password">
+            </div>
+			{%for message in messages%}
+			{% if 'user_login' in message.tags %}
+				 <h6 class="text-danger ">{{message}}</h6>  
+			{% endif %}
+		
+		{% endfor %}   
+            <button type="submit" id="submit" class="btn mt-3" >Login</button>
+        </form>
+		
+        <div class="text-center fs-6">
+            or <a href="signup">Register</a>
+        </div>
+	
+		<div class="text-center mt-4 name mob">
+            or Log in With OTP
+        </div>
+		
+		<form class="p-3 mt-3 form"  method="POST" action="getotp">
+			{% csrf_token %}
+
+            <div class="form-field d-flex align-items-center">
+                <span class="far fa-user"></span>
+                <input type="text"  class="form-control mobnum " name="phone" placeholder="Mobile Number ">
+            </div>
+			{%for message in messages%}
+			{% if 'phone_login' in message.tags %}
+			  <h6 class="text-danger mx-5 ">{{message}}</h6>
+			{% endif %}
+		 
+		 {% endfor %} 
+		 <button type="submit" id="submit" class="btn btn-sm btn-custom btn-info btn-block ">SEND OTP
+		</button>
+        </form>
+    </div>
+
+	
+
+</body>    

@@ -1,0 +1,132 @@
+{% extends 'base.html' %}{% block content %}
+{% block title %}Product Modifications{% endblock title %}
+  <div class="container">
+   
+        
+    <div class="col-md-8 my-4 mx-auto" style="width:60%;">
+        <div class="card">
+            <div class="card-header">
+                <h4>Edit Products</h4>
+            </div>
+            <div class="card-body">
+                <form action="editproduct?id={{product.id}}" method ="POST" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <div class="form-group" >
+                    <label for="pname">Slug</label>
+                    <input type="text" class="form-control" name="slug" value="{{product.slug}}" id="slug" aria-describedby="emailHelp" placeholder="Product Brand">
+                    <span id="errorbrand" class="text-danger"></span>
+                  </div>
+                  <div class="form-group" >
+                    <label for="pname">Tag</label>
+                    <input type="text" class="form-control" name="tag" value="{{product.tag}}" id="tag" aria-describedby="emailHelp" placeholder="Product Brand">
+                    <span id="errorbrand" class="text-danger"></span>
+                  </div>
+
+                    <div class="form-group" >
+                      <label for="pname">Name</label>
+                      <input type="text" class="form-control" name="name" value="{{product.name}}" id="name" aria-describedby="emailHelp" placeholder="Product Name">
+                      <span id="errorname" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                      <label for="pimage">Image</label>
+                      <input type="file" class="form-control" id="product_image" name="product_image"  placeholder="Product Image">
+                      <span id="errorimage" class="text-danger"></span>
+                    </div>
+                    
+                    <div class="form-group">
+                      <label for="pimage">Category</label>
+                      <select class="form-control" name="category" id="category">
+                        <option value="0">Select Category</option>
+                        {% for category in categories %}
+                        <option value="{{category.id}}">{{category.name}}</option>
+                        {% endfor %}
+                      </select>
+                      <span id="errorcategory" class="text-danger"></span>
+                    </div>
+                    {% comment %} <div class="form-group">
+                      <label for="price">Original Price</label>
+                      <input type="text" class="form-control" value="{{product.original_price}}" name="original_price" id="original_price" placeholder="Original Price">
+                      <span id="errorprice" class="text-danger"></span>
+                    </div> {% endcomment %}
+                    <div class="form-group">
+                      <label for="price">Selling Price</label>
+                      <input type="text" class="form-control" value="{{product.selling_price}}" name="selling_price" id="selling_price" placeholder="Selling Price">
+                      <span id="errorprice" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                      <label for="Stock">Quantity</label>
+                      <input type="number" class="form-control" name="quantity" id="quantity" value="{{product.quantity}}" placeholder="Product Stock">
+                      
+                    </div>
+                    <div class="form-group my-4">
+                      <label for="exampleFormControlTextarea1">Small Description</label>
+                      <textarea class="form-control" name="small_description" value="{{product.small_description}}" id="small_description" rows="3"></textarea>
+                      <span id="errordescription" class="text-danger"></span>
+                    <div class="form-group my-4">
+                        <label for="exampleFormControlTextarea1">Description</label>
+                        <textarea class="form-control" name="description" value="{{product.description}}" id="description" rows="3"></textarea>
+                        <span id="errordescription" class="text-danger"></span>
+                    </div>
+                    <button type="submit" id="btn1" class="btn "style="background:#94D3AC;">Update Product</button>
+                    <span id="#error" class="text-danger"></span>
+                  </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+  $('#btn1').click(()=>{
+      var slug = $('#slug').val()
+      var tag = $('#tag').val()
+      var name = $('#name').val()
+      var product_image = $('#product_image').val()
+      var category = $('#category').val()
+      var original_price = $('#original_price').val()
+      var selling_price = $('#selling_price').val()
+      var small_description = $('#small_description').val()
+      var description = $('#description').val()
+      var quantity = $('quantity').val()
+      console.log(product_image)
+      
+
+      
+      if(name == '' ){
+          $('#errorname').html('Enter the name')
+          return false
+      }
+      else if(product_image == ''){
+          $('#errorimage').html('Choose a Image')
+          return false
+      } 
+      else if (category == 0){  
+          $('#errorcategory').html('Select a category')
+          return false;  
+      }
+      else if(original_price == ''){
+          $('#errorprice').html('Enter the price')
+          return false
+      }
+      else if(selling_price == ''){
+        $('#errorprice').html('Enter the price')
+        return false
+      }
+      else if(description == ''){
+          $('#errordescription').html('Enter the description')
+          return false
+      }
+      else if(slug == ''){
+          $('#errorbrand').html('Enter the Slug Url')
+          return false
+      }
+      else{
+          $('#error').html('')
+          $('#error1').html('')
+          alert("Product Updated Successfully")
+          return true
+      }
+      
+  })
+
+</script>
+    
+{% endblock content %}

@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Sign Up Page{% endblock title %}
+
+{% block css_files %}
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<link rel="stylesheet" href="{% static 'css/signup.css' %}">
+<link rel="stylesheet" href="{% static 'css/errorstyle.css' %}">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://kit.fontawesome.com/bdfb96850f.js" crossorigin="anonymous"></script>
+<script src="{% static 'js/signup.js' %}"></script>
+
+
+{% endblock css_files %}
+
+
+{% block content %}
+<style>
+    body {
+      background-image: url('https://images.alphacoders.com/683/683741.jpg');
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-size: 100% 100%;
+    }
+</style>
+
+<div class="container">
+    
+    <div class="row">
+        
+        <h2 style="color: #fff;" class="col-sm-offset-3 col-sm-6">   
+            <img id="logo_site"src="{% static 'assets/kickstartwhitelogo-cropped.png.jpg' %}" style="height:50px;"
+            <b>REGISTRATION</b></h3>
+          
+    </div>
+    <br />
+
+    <div class="row">
+        <div class="col-sm-offset-1 col-sm-2">
+
+        </div>
+        <div class="col-sm-6">
+            <form id="submit-form" action="signup" method="POST" accept-charset="utf-8" class="form" role="form">
+               {% csrf_token %}
+                <div class="row">
+                    <div class="col-xs-6 col-md-6">
+                        <input id="fname"  style="color: black;" type="text" name="first_name" value=""
+                            class="form-control input-lg" placeholder="First Name" onkeyup="validatefname()" />
+                            <div id="fname-error" class="form-group "></div>
+                    </div>
+                    <div class="col-xs-6 col-md-6">
+                        <input id="lname" style="color: black;" type="text" name="last_name" value=""
+                            class="form-control input-lg" placeholder="Last Name" onkeyup="validatelname()"/>
+                            <div id="lname-error" class="form-group "></div>
+                    </div>
+                </div>
+                
+                <input id="email" style="color: black;" type="text" name="email" value="" class="form-control input-lg"
+                    placeholder="Email" onkeyup="validateEmail()" />
+                    <div id="email-error" class="form-group "></div>
+              
+                <input id=""  type="hidden" name="phone" value="{{phone}}" class="form-control input-lg"/>
+                <div id="mobnum-error" class="form-group "></div>
+
+                <input id="uname" style="color: black;" type="text" name="username" value="" class="form-control input-lg"
+                    placeholder="Username"onkeyup="validateUname()" />
+                <div id="uname-error" class="form-group "></div>
+                {%for message in messages%}
+                <h5 class="text-danger">{{message}}</h5>
+                {% endfor %} 
+                       
+                <input id="password" style="color: black;" type="password" name="password" value="" class="form-control input-lg"
+                    placeholder="Password"  onkeyup="validatePassword()"/>
+                <div id="password-error" class="form-group "></div>
+
+              
+             
+                    <button class="btn btn-light" type="submit" onclick="return validateform()"><b>CREATE MY ACCOUNT<b></button>
+                <div id="submit-error" class="form-group"></div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+
+<script src="{% static 'signup.js' %}"></script>
+
+
+
+{% endblock content %}

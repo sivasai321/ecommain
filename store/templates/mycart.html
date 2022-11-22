@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% load static %}{% load mathfilters %}
+  <head>
+    <title>My Cart</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="apple-touch-icon" href="assets/img/apple-icon.png" />
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/l1.png' %} ">  <!-- browswer tab logo -->
+    <!-- CSS -->
+    <link
+      rel="stylesheet"
+      href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"
+    />
+    <!-- Default theme -->
+    <link
+      rel="stylesheet"
+      href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"
+    />
+
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/templatemo.css' %}" />
+
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}" />
+   
+    <link rel="stylesheet" href="{% static 'css/cart.css' %}" />
+
+    <!-- Load fonts style after rendering the layout styles -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;700;900&display=swap"
+    />
+    <link rel="stylesheet" href="{% static 'css/fontawesome.min.css' %}" />
+
+    <!-- Slick -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href=" {% static ' css/slick.min.css' %}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static ' css/slick-theme.css' %}"
+    />
+
+
+    <script src="{% static 'js/cart2.js' %}"></script> 
+
+  </head>
+
+  <body>
+    <!-- Close Top Nav -->
+
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg navbar-light shadow">
+      <div class="container d-flex justify-content-between align-items-center">
+        <a
+          class="navbar-brand text-success logo h1 align-self-center"
+          href="index.html"
+        >
+          <img
+            class="img-fluid"
+            style="height: 40px"
+            src="{% static 'img/logogreen.png' %} "
+            alt=""
+          />
+        </a>
+
+        <button
+          class="navbar-toggler border-0"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#templatemo_main_nav"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div
+          class="align-self-center collapse navbar-collapse flex-fill d-lg-flex justify-content-lg-between"
+          id="templatemo_main_nav"
+        >
+          <div class="flex-fill">
+            <ul
+              class="nav navbar-nav d-flex justify-content-between mx-lg-auto"
+            >
+              <li class="nav-item">
+                <a class="nav-link" href="/home">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/collections">Categories</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="profile">Profile</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="myorder">My Orders</a>
+              </li>
+            </ul>
+          </div>
+          <div class="navbar align-self-center d-flex">
+            <div
+              class="d-lg-none flex-sm-fill mt-3 mb-4 col-7 col-sm-auto pr-3"
+            >
+              <div class="input-group">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="inputMobileSearch"
+                  placeholder="Search ..."
+                />
+                <div class="input-group-text">
+                  <i class="fa fa-fw fa-search"></i>
+                </div>
+              </div>
+            </div>
+            <a
+              class="nav-icon d-none d-lg-inline"
+              href="#"
+              data-bs-toggle="modal"
+              data-bs-target="#templatemo_search"
+            >
+              <i class="fa fa-fw fa-search text-dark mr-2"></i>
+            </a>
+            <a class="nav-icon position-relative text-decoration-none" href="#">
+              <i class="fa fa-fw fa-cart-arrow-down text-dark mr-1"></i>
+              <span
+                class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark"
+              ></span>
+            </a>
+            <a class="nav-icon position-relative text-decoration-none" href="#">
+              <i class="fa fa-fw fa-user text-dark mr-3 " style="margin-right:30px;"></i>
+              <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark"></span>
+          </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    {% comment %} Cart Definition {% endcomment %}
+    <section class="h-100 gradient-custom">
+      <div class="container py-5">
+        <div class="row d-flex justify-content-center my-4">
+          <div class="col-md-8">
+            <div class="card mb-4">
+              <div class="card-header py-3  product_data">
+                
+                <h5 class="mb-0">Cart - Items</h5>
+              </div>
+              {% if empty %}
+              <br>
+              <h3 class="mx-5">Cart is empty</h3>
+              {% endif %}
+              {% if cart %}
+              {% for item in cart %}
+              <div class="card-body">
+                <!-- Single item -->
+                <div class="row">
+                  <div class="col-lg-3 col-md-12 mb-4 mb-lg-0">
+                    <!-- Image -->
+                    <div class="bg-image hover-overlay hover-zoom ripple rounded" data-mdb-ripple-color="light">
+                      <img src="{{item.product.product_image.url}}"
+                        class="w-100" alt="item image" />
+                      <a href="#!">
+                        <div class="mask" style="background-color: rgba(251, 251, 251, 0.2)"></div>
+                      </a>
+                    </div>
+                    <!-- Image -->
+                  </div>
+    
+                  <div class="col-lg-5 col-md-6 mb-4 mb-lg-0">
+                    <!-- Data -->
+                    <h5><strong>{{item.product.name}}</strong></h5>
+                    <p>Category: {{item.product.category}}</strong></p>
+                    <a href="removecart?id={{item.id}}" class="btn btn-danger">Remove</a>
+                    {% comment %} <a type="button" class="btn btn-danger delete-cart-item btn-sm me-1 mb-2" href="removecart?id={{item.id}}" data-mdb-toggle="tooltip"
+                      title="Remove item">
+                      <i class="fas fa-trash"></i>
+                    </a> {% endcomment %}
+                        
+                     {% comment %} WISHLIST  {% endcomment %}
+
+                    {% comment %} <button type="button" class="btn btn-danger btn-sm mb-2" data-mdb-toggle="tooltip"
+                      title="Move to the wish list">
+                      <i class="fas fa-heart"></i>
+                    </button> {% endcomment %}
+
+                    <!-- Data -->
+                  </div>
+
+                  {% comment %} Offers {% endcomment %}
+                  {% for offer in offers %}
+                  {% if  offer.product.id == cart.product.id  or offer.category.id == category.id %} 
+                     <p class="fw-bold text-success">Offer: {{offer.offer}} % off upto ₹{{offer.max_value}} /-
+                  {% with offer1=item.product.selling_price|div:100|mul:offer.offer|floatformat:2 %}
+                  
+                  {% with offer2=item.product.selling_price|sub:offer1|floatformat:2 %}
+                  
+                  {% if offer2 < offer.max_value %}
+                      <br><p class="fw-bold">Offer Price1 = ₹{{offer2}}/-</p></p>
+                  {% else %}
+                      <br>Offer Price2 = ₹{{item.product.selling_price|sub:offer.max_value}}/-</p>
+                  {% endif %}
+                  {% endwith %}
+                  {% endwith %}
+                  
+                  {% endif %}
+                  {% endfor %}
+                
+                  {% comment %} Offers End {% endcomment %}
+                
+                  <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+                    <!-- Quantity -->
+                     
+                    <input type="hidden" class="prod_id" value="{{item.product_id}}">
+                    {% csrf_token %}
+                    {% if item.product.quantity >= item.product.quantity %}
+                    <label>Quantity</label>
+                    <div class="input-group text-center mb-3" style="width:130px;">
+                    <button class="input_group-text changeQuantity decrement-btn"  onclick="down({{item.id}})">
+                      <i class="fas fa-minus"></i></button>
+
+                      <span id="{{item.id}}" class="m-2"> {{item.quantity}} </span>
+                    
+                    {% comment %} <input id="form1" min="1" name="quantity" value="1" type="number" class="form-control qty-input text-center" /> {% endcomment %}
+                    
+                    
+                    <button class="input_group-text changeQuantity  increment-btn"  onclick="up({{item.id}})">
+                      <i class="fas fa-plus"></i></button>
+                  </div>
+                  {% else %}
+                   <h3>Out of Stock</h3>
+                  {% endif %}
+                   
+
+                  
+                    <!-- Quantity -->
+    
+                    <!-- Price -->
+                    <h6 class="text-start text-md-center">
+                      <strong>Rs {{item.product.selling_price}}</strong>
+                    </h6>
+                    <!-- Price -->
+                  </div>
+                </div>
+                <!-- Single item -->
+    
+                <hr class="my-4" />
+    
+               
+              </div>
+              {% endfor %}
+              {% endif %}
+            </div>
+       
+       
+          </div>
+          {% if empty %}
+              
+          {% else %}
+          <div class="col-md-4">
+            <div class="card mb-4">
+              <div class="card-header py-3">
+                <h5 class="mb-0">Order Summary</h5>
+              </div>
+              <div class="card-body">
+                <ul class="list-group list-group-flush">
+                  <li
+                    class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
+                    Products
+                    <span id="total">Rs {{subtotal}}</span>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                    Shipping:
+                    <span>Free</span>
+                  </li>
+                  <li
+                    class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
+                    <div>
+                      <strong>Total amount</strong>
+                      <strong>
+                        <p class="mb-0">(including VAT)</p>
+                      </strong>
+                    </div>
+                    <span id="totall">Rs <strong>{{subtotal}}</strong></span>
+                  </li>
+                </ul>
+    
+                <a href="checkout" class="btn btn-success">Proceed to Checkout</a>
+              </div>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </section>
+     <!-- JavaScript -->
+     <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+     <script>
+ 
+       alertify.set('notifier','position', 'top-right');
+       {% for msg in messages %}
+       alertify.success('{{ msg }}');
+       {% endfor %}
+      
+       function up(id){
+        var id=id
+        $.ajax({
+          type:"GET",
+          url:"up?id="+id,
+          success: function(data){
+            //alert(data.total)
+           
+            document.getElementById(id).innerHTML=data.data;
+            document.getElementById('total').innerHTML=data.total
+            document.getElementById('totall').innerHTML=data.total
+          }
+        })
+       }
+       function down(id){
+        $.ajax({
+          type:"GET",
+          url:"down?id="+id,
+          success: function(data){
+            if(data.data == 0){
+              $.ajax({
+                type:'GET',
+                url: "removecart?id="+id,
+                success: function(data){
+                  location.reload();
+                }
+              })
+            }
+           
+            document.getElementById(id).innerHTML=data.data;
+            document.getElementById('total').innerHTML=data.total
+            document.getElementById('totall').innerHTML=data.total
+          }
+        })
+        }
+     </script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+     <script src="{% static 'js/jquery-1.11.0.min.js' %} "></script>
+     <script src="{% static 'js/jquery-migrate-1.2.1.min.js'%} "></script>
+     <script src="{% static 'js/bootstrap.bundle.min.js' %} "></script>
+     <script src="{% static ' js/templatemo.js' %}"></script>
+     <script src="{% static ' js/cart2.js' %}"></script>
+     <!-- End Script -->
