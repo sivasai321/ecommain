@@ -1,6 +1,15 @@
-{% extends 'base.html' %}
+
 {% load static %}
-{% block title %}Sign Up Page{% endblock title %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/l1.png' %} ">  <!-- browswer tab logo -->
+  <title>
+  {% block title %}Sign-Up Page{% endblock title %}
+   </title>
 
 {% block css_files %}
 <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
@@ -19,7 +28,7 @@
 {% block content %}
 <style>
     body {
-      background-image: url('https://images.alphacoders.com/683/683741.jpg');
+      background:#03f473;
       background-repeat: no-repeat;
       background-attachment: fixed;
       background-size: 100% 100%;
@@ -77,7 +86,7 @@
 
               
              
-                    <button class="btn btn-light" type="submit" onclick="return validateform()"><b>CREATE MY ACCOUNT<b></button>
+                    <button class="btn btn-dark" type="submit" onclick="return validateform()"><b>CREATE MY ACCOUNT<b></button>
                 <div id="submit-error" class="form-group"></div>
             </form>
         </div>
@@ -85,7 +94,7 @@
 </div>
 </div>
 
-<script src="{% static 'signup.js' %}"></script>
+<script src="{% static 'js/signup.js' %}"></script>
 
 
 

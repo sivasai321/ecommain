@@ -1,113 +1,246 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}All Categories{% endblock title %}
+{% block title %}All Orders{% endblock title %}
 {% block content %}
+{% load mathfilters %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-
-<!-- Default theme -->
-  {% comment %} <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script> {% endcomment %}
-
-
-
-
-
+<style>
+  
+  
+  /* The Modal (background) */
+  .modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  }
+  
+  /* Modal Content */
+  .modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%;
+  }
+  
+  /* The Close Button */
+  .close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .modal-backdrop {
+    z-index: 1040 !important;
+}
+  </style>
 
 <div class = "d -flex container">
-    <div class="row  my-5">
-        
-        <div class="col-md-12">
-            <div class="card ">
-                <div class="card-header">
-                    <h4>My Orders</h4>
-                </div>
-                {% if empty %}{% endif %}
-                {% for order in orders %}
-                
-                <div class="card-body">
-                    
-                    
-                    <div class="d-flex">
-                        <div class="col-md-4">
-                            <p>Order ID: {{order.id}} <p>           <p>Order Date: {{order.ordered_date}}</p>
-                         
-                                <br>
-                                <h5>Total: {{order.amount}}</h5>
-                            </ul> 
-                        </div>
-                        <div class ="col-md-4">
-                            <h6><b>Shipping Address</b></h6>
-                            <ul type="None">
-                                <li>{{order.address.name}}</li>
-                                <li>{{order.address.address}}</li>
-                                <li>{{order.address.phone}}</li>
-                                <li>{{order.address.city}}</li>
-                                <li>{{order.address.state}}</li>
-                                <li>{{order.address.pincode}}</li>
-                                
-                            </ul>
-                    </div>
-                    <div>
+  <div class="row  my-5">
+    <div class="col-md-12">
+      <div class="card ">
+        <div class="card-header">
+            <h4>My Orders</h4>
+        </div>
+        {% if empty %}{% endif %}
+        {% for order in orders %}
+       
+        <div class="card-body" style="position:default;">
+          <div class="d-flex">
+            <div class="col-md-4">
+              <p>Order ID: {{order.id}} <p>           
+              <p>Order Date: {{order.ordered_date}}</p>
+              <h6><b>Order Items</b></h6>
+                <ul> 
+                  {% for cart in cart %}
+                  {% if cart.order.id == order.id  %}
+                    <li>
+                       <b> {{cart.product.name}}</b> - Qty: {{cart.quantity}} - ₹{{cart.product.selling_price}}
+                    </li>
+                  {% endif %}
+                  {% endfor %}
+                  <br>
+                  <h5>Total: ₹{{order.amount}}/-</h5>
+                </ul> 
+            </div>
+            <div class ="col-md-4">
+                <h6><b>Shipping Address</b></h6>
+                  <ul type="None">
+                    <li>{{order.address.name}}</li>
+                    <li>{{order.address.address}}</li>
+                    <li>{{order.address.phone}}</li>
+                    <li>{{order.address.city}}</li>
+                    <li>{{order.address.state}}</li>
+                    <li>{{order.address.pincode}}</li>
+                  </ul>
+            </div>
+            <div>
                         <h6><b>Payment Method</b></h6>
                         <p>{{order.method}}</p> 
                         <br>
                         <h6><b>Order Status</b></h6>
                         <p>{{order.status}}</p>
-                        {% if order.cancel %}
+                        {% if order.cancel %}<p>Order Cancelled</p>
                         {% comment %} <p>Order Cancelled</p> {% endcomment %}
+                        {% elif order.status == 'Delivered'%}
+                        {% comment %} <button class="" id="myModal">Return</button> {% endcomment %}
+                        
+                        <a type="button" class="btn btn-outline-primary" href="returnorder?id={{order.id}}">
+                          Return
+                        </a>
+                       
+                        
+                        {% elif order.status == 'Return Requested' %}
+                        {% elif order.status == 'Return Accepted' or order.status == 'Return Rejected'%}
                         {% else %}
-                        {% comment %} <button class="btn btn-danger" onclick="cancelOrder({{order.id}})">Cancel Order</button> {% endcomment %}
-                        <a href="cancelorder?id={{order.id}}"><b>Cancel Order</b></a>
-                        {% endif %}
-                        {% comment %} <a class="btn text-light" href= "cancelorder?id={{order.id}}" style="background: #1C3879; "><i style=""onclick="return confirm('Are you sure to cancel the order ?')">Cancel Order</i>
-                            </a> {% endcomment %}
-                         <br>
-                            <a href="invoice?id={{order.id}}" class="text-success"> Download invoice</a>
-                    </div>
-                    
-                </div>
-                <hr>
-                   
+                        <button class="btn btn-outline-danger" onclick="cancelOrder({{order.id}})">Cancel Order</button>
+                        {% endif %}                       
+                        <a class="btn btn-outline-success btn-sm" href="invoice?id={{order.id}}" onclick="">Download Invoice</a>
             </div>
-            {% endfor %}
+                    
+            {% comment %} <div id="myModal" class="modal">
+
+                      <!-- Modal content -->
+                      <div class="modal-content">
+                        <h3>{{order.id}}</h3>
+                        <span class="close">&times;</span>
+                        <h3> Reason For Return</h3>
+                        {{order.id}}
+                        <form action="returnorder?id={{order.id}}" method="POST">
+                          {% csrf_token %}
+                          <textarea name="reason" id="reason" cols="30" class ="w-100" required placeholder="Enter the reason"></textarea>
+                          <button type="submit" onclick="reason()" class="btn btn-outline-danger w-100">Submit</button>
+                        </form>
+                      </div>
+                    
+            </div> {% endcomment %}
             
-        </div>
-        
-        
+          </div>
+              
+        </div>  
+              
+          {% endfor %}
+            
+            
+      </div>
     </div>
+  </div> 
+</div>
     
 
-</div>
+
+
+
 <script>
     
-    function cancelOrder(id){
+    var modal = document.getElementById("myModal");
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("myBtn");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks the button, open the modal
+    
+    btn.onclick = function() {
+      modal.style.display = "block";
+
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+      modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+    {% comment %} function reason(){
+      var reason = document.getElementById("reason").value;
+      if(reason == ""){
+        alert("Please enter the reason");
+      }
+    } {% endcomment %}
+    
+    function returnOrder(id){
         swal({
-            title: "Are you sure?",
-            text: "Once deleted, you will not be able to recover this imaginary file!",
+            title: "Are you sure to return the order?",
+            text: "",
             icon: "warning",
             buttons: true,
             dangerMode: true,
           })
           .then((willDelete) => {
             if (willDelete) {
-                window.location.href = "cancelorder?id="+id;
-              swal("Poof! Your imaginary file has been deleted!", {
+                $.ajax({
+                    url: 'returnorder',
+                    type: 'GET',
+                    data: {id: id},
+                    success: function(response){
+                        location.reload()
+                        
+                    }
+                })
+              swal("Your order is requested to return!", {
                 icon: "success",
               });
             } else {
-              swal("Your imaginary file is safe!");
+              swal("Your order is safe!");
             }
           });
     }
-</script>
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.11.3/af-2.3.7/b-2.0.1/b-colvis-2.0.1/b-html5-2.0.1/b-print-2.0.1/cr-1.5.4/date-1.1.1/fc-4.0.0/kt-2.6.4/r-2.2.9/rg-1.1.3/rr-1.2.8/sl-1.3.3/datatables.min.css"/>
-<script>
-    $(document).ready( function () {
+    function cancelOrder(id){
+      console.log("heyyyy")
+      swal({
+         
+          title: "Are you sure?",
+          text: "Once deleted, you will not be able to recover this imaginary file!",
+          icon: "warning",
+          buttons: true,
+          dangerMode: true,
+        })
+        .then((willDelete) => {
+          if (willDelete) {
+              window.location.href = "cancelorder?id="+id;
+            swal("Poof! Your imaginary file has been deleted!", {
+              icon: "success",
+            });
+          } else {
+            swal("Your imaginary file is safe!");
+          }
+        });
+  }
+
+</script><link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.11.3/af-2.3.7/b-2.0.1/b-colvis-2.0.1/b-html5-2.0.1/b-print-2.0.1/cr-1.5.4/date-1.1.1/fc-4.0.0/kt-2.6.4/r-2.2.9/rg-1.1.3/rr-1.2.8/sl-1.3.3/datatables.min.css"/>
+{% comment %} <script>
+    {% comment %} $(document).ready( function () {
       $('#table_id').DataTable();
     
     });
-  </script>
+     {% endcomment %}
+      
+      
+      
+  {% comment %} </> {% endcomment %}
+
 {% endblock content %}

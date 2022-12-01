@@ -110,6 +110,7 @@
                         <tr>
                             <th>Code</th>
                             <th>Discount</th>
+                            <th>Min. Value</th>
                             <th>Start Date</th>
                             <th>End Date</th>
                             <th>Block</th>
@@ -122,23 +123,16 @@
                         <tr>
                             <td>{{coupon.code}}</td>
                             <td>{{coupon.discount}}</td>
+                            <td>{{coupon.min_amount}}</td>
                             <td>{{coupon.start_date}}</td>
                             <td>{{coupon.end_date}}</td>
-                            <td> {% if user.is_active %}
+                            <td> {% if coupon.is_active %}
                                 <a style=" background:#CCEDD2; " class="btn" href= "blockcoupon?id={{coupon.id}}"><i style=""onclick="return confirm('Are you sure to block '+' {{coupon.code}} ?')">Block</i>
                                     </a>
                                 {% else %}
                                 <a style="background:#CCEDD2;" class="btn" href= "unblockcoupon?id={{coupon.id}}"><i style="y"onclick="return confirm('Are you sure to unblock '+' {{coupon.code}} ?')"</i>
                                 unblock</a>
                                 {% endif %}
-                            {% comment %} </td>
-                            <td><a class="btn btn-primary" href="editproduct?id={{product.id}}"><i class="fa-solid fa-pen-to-square text-light"></i></a></td>
-                            <td> {% endcomment %}
-{% comment %} 
-                                <botton class="btn btn-danger" onclick="deleteProduct({{coupon.id}})"><i class="fa-solid fa-trash text-light"></i></botton> {% endcomment %}
-                                {% comment %} <a class="btn btn-danger" href="deleteproduct?id={{product.id}}">Delete</a> {% endcomment %}
-                                {% comment %} <a class="btn btn-danger" href= "deleteproduct?id={{product.id}}"><i style=""onclick="return confirm('Are you sure to block '+' {{product.name}} ?')"</i>
-                                Delete</a> {% endcomment %}
                             </td>
                             
                         </tr>
@@ -155,81 +149,20 @@
     $(document).ready(function() {
         $('#example').DataTable();
     } );
-</script>
-<script>
-    function deleteProduct(id){
-        {% comment %} alert(id); {% endcomment %}
-        var id=id;
-        
-        swal({
-            title: "Are you sure to delete the product?",
-            text: "",
-            icon: "warning",
-            buttons: true,
-            dangerMode: true,
-          })
-          .then((willDelete) => {
-            if (willDelete) {
-                $.ajax({
-                    url: 'deleteproduct',
-                    type: 'GET',
-                    data: {id:id},
-                    success: function(response){
-                        swal("Poof! Product has been deleted!", {
-                            icon: "success",
-                        });
-                        location.reload();
-                    }
-                });
-              
-            } else {
-              swal("Your product is safe!");
-            }
-          });
-    }
-</script>
-<script>
+
+
+
     $(document).ready(function () {
         console.log("hello");
         $('#myTable').DataTable();
         $('#order_table').DataTable();
     });
-    {% comment %} function deleteOffer(id){
-        var id=id;
-        alert(id)
-        swal({
-            title: "Are you sure to delete the offer?",
-            text: "",
-            icon: "warning",
-            buttons: true,
-            dangerMode: true,
-          })
-          .then((willDelete) => {
-            if (willDelete) {
-                alert('hiii')
-                    
-                $.ajax({
-                    url: 'deletecoupon',
-                    type: 'GET',
-                    data: {id:id},
-                    success: function(response){
-                        swal("Poof! Offer has been deleted!", {
-                            icon: "success",
-                        });
-                        location.reload();
-                    }
-                    
-                });
-              
-            } else {
-              swal("Your product is safe!");
-            }
-          });
-    } {% endcomment %}
+
     function blockcoupon(id){
         var id=id;
+        console.log('hello from block')
         swal({
-            title: "Are you sure to block the Coupon?",
+            title: "Are you sure to block the offer?",
             text: "",
             icon: "warning",
             buttons: true,
@@ -237,13 +170,13 @@
           })
           .then((willDelete) => {
             if (willDelete) {
-                    
+                 console.log('hello from willDelete')   
                 $.ajax({
                     url: 'blockcoupon',
                     type: 'GET',
                     data: {id:id},
                     success: function(response){
-                        swal("Poof! Coupon has been blocked!", {
+                        swal("Poof! offer has been blocked!", {
                             icon: "success",
                         });
                         location.reload();
@@ -257,6 +190,7 @@
           });
     }
     function unblockcoupon(id){
+        console.log('hello from unblock')
         var id=id;
         
         $.ajax({
@@ -264,13 +198,11 @@
             type: 'GET',
             data: {id:id},
             success: function(response){
-                
                 location.reload();
             }
             
         });
     }
-    
         
       
 </script>

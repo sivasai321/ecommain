@@ -24,6 +24,10 @@ from xhtml2pdf import pisa
 import random
 from django.http import JsonResponse
 from guest_user.decorators import allow_guest_user
+from guest_user.models import Guest
+from twilio.base.exceptions import TwilioRestException,TwilioException
+from twilio.rest import Client
+
 # --------------------------VIEWS-----------------------------------#
 
 # Guest User
@@ -40,7 +44,7 @@ def guest(request):
 # User Login     
 @never_cache
 def loginpage(request):
-    if request.user.is_authenticated and request.user.is_superuser == False: 
+    if request.user.is_authenticated and request.user.is_superuser == False and request.user.first_name !='': 
         messages.success(request,'Already Logged in')
         return redirect('home')
     if request.method == 'POST' and 'username' in request.POST and 'password' in request.POST :
@@ -67,6 +71,9 @@ def loginpage(request):
 # User sign up
 def signup(request):
     
+    print(request.user.id)
+    id = request.user.id
+
     if request.method == 'POST'  and 'otp' not in request.POST:
         first_name = request.POST['first_name']
         last_name = request.POST['last_name']
@@ -75,19 +82,19 @@ def signup(request):
         username = request.POST['username']
         password = request.POST['password']
         print("username=", username)
-        print(password)  
-        user = User.objects.create_user(first_name=first_name, last_name=last_name,  username=username, email=email, password=password)
-        user.save()
+        print(password)
+        user = User.objects.create_user(id=id,first_name=first_name, last_name=last_name,  username=username, email=email, password=password)
+        user.save_base()
         user_id = User.objects.get(username=username)
         account = Accounts.objects.create(user=user_id, phone=phone)
         account.save()
+        guest = Guest.objects.get(user_id=id)
+        guest.delete()
         print('user created')
-        return render(request,'loginpage.html')
-        
+        return render(request,'loginpage.html')   
     elif request.method == 'POST':
         phone = request.POST['phone']
         otp=968542
-
         otp1 =int( request.POST['otp'])
         print(otp)
         print(otp1)
@@ -129,10 +136,14 @@ def getotp(request):
         messages.info(request, "Phone Number Not Registered", extra_tags='phone_login' )
         return redirect('loginpage')
     else:
-       num = Accounts.objects.filter(phone=phone)
-       message_handler = MessageHandler(phone,num[0].otp).sent_otp_on_phone()
-       return redirect(f'otp/{num[0].uid}')
-    
+        try:
+            num = Accounts.objects.filter(phone=phone)
+            message_handler = MessageHandler(phone,num[0].otp).sent_otp_on_phone()
+            return redirect(f'otp/{num[0].uid}')
+            print(message.sid)
+        except (TwilioRestException,TwilioException):
+                return redirect('error')
+
 # Login via OTP    
 @never_cache
 def otplogin(request,uid):
@@ -143,7 +154,7 @@ def otplogin(request,uid):
         accounts = Accounts.objects.get(uid=uid)
      
         if otp == accounts.otp:
-            login(request,accounts.user,backend=None)
+            login(request,accounts.user,backend='django.contrib.auth.backends.ModelBackend')
             return redirect('home')
         else:
           return redirect(f'/otp/{uid}')
@@ -163,11 +174,14 @@ def mobile_signup(request):
              messages.info(request, 'Mobile Number Already Registered')
              return redirect('mobile')
         else:
-            otp = 968542
-            print(otp)
-            message_handler = MessageHandler(phone, otp).sent_otp_on_phone()
-            return render(request, "enterotp.html",{ 'phone': phone})
-
+            global generated_otp
+            otp = random.randint(100000, 999999)
+            generated_otp=otp
+            try:
+                message_handler = MessageHandler(phone, otp).sent_otp_on_phone()
+                return render(request, "enterotp.html",{ 'phone': phone})
+            except (TwilioRestException,TwilioException):
+                return redirect('error')
     return render(request,"enterphone.html")
     
     

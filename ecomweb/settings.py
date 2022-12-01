@@ -18,7 +18,7 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 TWILIO_ACCOUNT_SID='AC1e10d70886b43a04dab18511ee72d1e3'
-TWILIO_AUTH_TOKEN='70303105cd45d6f8f55bf5b6e0f18e8f'
+TWILIO_AUTH_TOKEN='cfac01d4321701fb040c7e822412100a'
 
 
 

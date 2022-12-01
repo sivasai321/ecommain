@@ -36,5 +36,9 @@ urlpatterns =[
     path('report',views.report, name='report'),
     path('blockcoupon',views.blockcoupon, name='blockcoupon'),
     path('unblockcoupon',views.unblockcoupon, name='unblockcoupon'),
+    path('blockoffer',views.blockoffer, name='blockoffer'),
+    path('unblockoffer',views.unblockoffer, name='unblockoffer'),
+    path('acceptrequest',views.acceptrequest, name='acceptrequest'),
+    path('rejectrequest',views.rejectrequest, name='rejectrequest'),
     
  ]

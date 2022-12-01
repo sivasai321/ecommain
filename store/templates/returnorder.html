@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}All Categories{% endblock title %}
+{% block content %}
+<div class = "d -flex container">
+    <div class="row  my-5">
+      <div class="col-md-12">
+<div class="">
+    <h3>{{order.id}}</h3>
+    
+    <h3> Reason For Return</h3>
+    {{order.id}}
+    <form action="returnorder?id={{id}}" method="POST">
+      {% csrf_token %}
+      
+      <input id="id"  style="color: black;" type="hidden" name="id" value="{{id}}">
+      <textarea name="reason" id="reason" cols="30"  class ="w-100" required placeholder="Enter the reason"></textarea>
+      <button type="submit" onclick="reason()" class="btn btn-outline-danger w-100">Submit</button>
+    </form>
+  </div>
+</div>
+</div>
+</div>
+{% endblock content %}
+
+

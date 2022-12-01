@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-  {% load static %}{% load mathfilters %}
+  {% load static %}{% load mathfilters %}{% load guest_user %}
   <head>
     <title>My Cart</title>
     <meta charset="utf-8" />
@@ -134,7 +134,9 @@
             </a>
             <a class="nav-icon position-relative text-decoration-none" href="#">
               <i class="fa fa-fw fa-user text-dark mr-3 " style="margin-right:30px;"></i>
-              <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark"></span>
+              <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">
+          
+              </span>
           </a>
           </div>
         </div>
@@ -193,23 +195,38 @@
                   </div>
 
                   {% comment %} Offers {% endcomment %}
+      
                   {% for offer in offers %}
-                  {% if  offer.product.id == cart.product.id  or offer.category.id == category.id %} 
-                     <p class="fw-bold text-success">Offer: {{offer.offer}} % off upto ₹{{offer.max_value}} /-
-                  {% with offer1=item.product.selling_price|div:100|mul:offer.offer|floatformat:2 %}
+                
+                   
                   
-                  {% with offer2=item.product.selling_price|sub:offer1|floatformat:2 %}
+                  {% if  offer.product.id == cart.product.id  or offer.category.id == cart.product.category.id  %} 
+                     
+                  {% with offer1=cart.product.selling_price|div:100|mul:offer.offer|floatformat:2 %}
+                  {% with offer2=cart.product.selling_price|sub:offer1|floatformat:2 %}
+                  {% with offerprice1=item.product.selling_price|sub:offer.max_value %}
+                  {% with offerprice2=item.price_with_offer %}
+                  {% if offerprice1 == offerprice2 %}
+                      <p class="fw-bold text-success">Offer: {{offer.offer}}% off upto ₹{{offer.max_value}}/-
                   
                   {% if offer2 < offer.max_value %}
-                      <br><p class="fw-bold">Offer Price1 = ₹{{offer2}}/-</p></p>
+                      <br><p class="fw-bold">Offer Price = ₹{{offer2}}/-</p></p>
+                     
                   {% else %}
-                      <br>Offer Price2 = ₹{{item.product.selling_price|sub:offer.max_value}}/-</p>
+                
+                      <br>Offer Price = ₹{{item.product.selling_price|sub:offer.max_value}}/-</p>
                   {% endif %}
+                      
+                  {% endif %}
+                  {% endwith %}
+                  {% endwith %}
                   {% endwith %}
                   {% endwith %}
                   
                   {% endif %}
                   {% endfor %}
+             
+                  
                 
                   {% comment %} Offers End {% endcomment %}
                 
@@ -290,7 +307,15 @@
                   </li>
                 </ul>
     
-                <a href="checkout" class="btn btn-success">Proceed to Checkout</a>
+                {% if  user|is_guest_user  %}
+              <a type="button" href="loginpage" class="btn btn-primary btn-lg btn-block">
+                Go To Checkout
+              </a>
+              {% else %}
+              <a type="button" href="checkout" class="btn btn-primary btn-lg btn-block">
+                Go To Checkout
+              </a>
+              {% endif %}
               </div>
             </div>
           </div>
@@ -302,10 +327,8 @@
      <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
      <script>
  
-       alertify.set('notifier','position', 'top-right');
-       {% for msg in messages %}
-       alertify.success('{{ msg }}');
-       {% endfor %}
+ 
+ 
       
        function up(id){
         var id=id
@@ -313,7 +336,7 @@
           type:"GET",
           url:"up?id="+id,
           success: function(data){
-            //alert(data.total)
+            location.reload();
            
             document.getElementById(id).innerHTML=data.data;
             document.getElementById('total').innerHTML=data.total

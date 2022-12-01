@@ -77,7 +77,7 @@ class Order(models.Model):
     amount = models.FloatField(default=1)
     method = models.CharField(max_length=100, default='Cash On Delivery')
     cancel = models.BooleanField(default=False)
-    
+    reason = models.CharField(max_length=200, default='')
 
 
 class AdminCart(models.Model):
@@ -126,3 +126,5 @@ class Coupon(models.Model):
 
     def __str__(self):
         return self.code
+
+      

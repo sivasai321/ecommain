@@ -1,54 +1,53 @@
-{% extends 'base.html' %}
+
 {% load static %}
-{% block title %}Mobile Registration{% endblock title %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/l1.png' %} ">  <!-- browswer tab logo -->
+  <title>
+  {% block title %}Mobile Registration{% endblock title %}
+   </title>
+
 {% block css_files %}
 <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-<link rel="stylesheet" href="{% static 'css/signup.css' %}">
+
 <link rel="stylesheet" href="{% static 'css/errorstyle.css' %}">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="{% static 'js/signup.js' %}"></script>
-
+  
+<link rel="stylesheet" href="{% static 'css/formboth.css' %}">
 <script src="https://kit.fontawesome.com/bdfb96850f.js" crossorigin="anonymous"></script>
 
 {% endblock css_files %}
 
 
-{% block content %}
-<style>
-    body {
-      background-image: url('https://c4.wallpaperflare.com/wallpaper/78/950/417/michael-jordan-wallpaper-preview.jpg');
-      background-repeat: no-repeat;
-      background-attachment: fixed;
-      background-size: 100% 100%;
-    }
-</style>
 
-<div class="container">
-    <div class="row">
-        <h3 style="color:#fff" class="col-sm-offset-3 col-sm-6  "><b>ENTER MOBILE NUMBER TO PROCEED</b></h3>
-   </div>
-    <br />
-
+    
+<div class="container ">
+        <div class="row ">
+            <h1 style="color:#03f473;" class="col-sm-offset-3 col-sm-6  "><b>ENTER MOBILE NUMBER TO PROCEED</b></h1>
+       </div>
     <div class="row">
         <div class="col-sm-offset-1 col-sm-2">
         </div>
         <div class="col-sm-6">
             <form id="submit-form" action="mobile" method="POST" accept-charset="utf-8" class="form" role="form">
                {% csrf_token %}
-                <div class="row">    
-                </div>             
-                <br>
                 <input id="mobnum" style="color: black;" type="text" name="phone" value="" class="form-control input-lg"
                 placeholder=" Enter your Mobile Number" onkeyup="validatemobnum()" />
                 <div id="mobnum-error" class="form-group "></div>
 
               
                 {%for message in messages%}
-                <h5 class="text-warning " style="color:#ff0000;"><b>{{message}}</b></h5>
+                <h5 class="text-warning" style="color:#ff0000;"><b>{{message}}</b></h5>
                 {% endfor %}           
-                    <button class="btn btn-lg  "style="color:#000" type="submit" 
+                    <button class="btn btn-success" style="background:#03f473;" type="submit" 
                     onclick="return validateform()"><b>NEXT<b></button>
                 <div id="submit-error" class="form-group"></div>
             </form>
@@ -59,4 +58,4 @@
 
 <script src="{% static 'js/signup.js' %}"></script>
 
-{% endblock content %}
+

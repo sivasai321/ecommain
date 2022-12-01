@@ -8,7 +8,10 @@ from django.views.decorators.cache import never_cache
 from django.http import JsonResponse
 from guest_user.decorators import allow_guest_user
 
+
 # Create your views here.
+generatedotp=0
+offerprice=0
 
 @login_required(login_url='loginpage')
 @never_cache
@@ -35,11 +38,11 @@ def collections(request):                                  # To show all the Cat
 
 def collectionsview(request):                         # products_index.html -- to show all products inside a category
   id=request.GET['id']
-
+  offers= Offers.objects.all
   if(Category.objects.filter(id=id,status=1)):
    products=Product.objects.filter(category__id=id)
    category=Category.objects.filter(id=id).first()
-   context={'products':products,'category':category}
+   context={'products':products,'category':category, 'offers':offers}
    return render(request,"products_index.html",context)
   
   else:
@@ -98,89 +101,54 @@ def productview(request):              # to detail individual products
  
 
 
-# def addtocart(request):                                     #to add item to cart from the view item page
-#   if request.method=='POST':
-#     if request.user.is_authenticated:
-#       prod_id=int(request.POST.get('product_id'))
-#       product_check=Product.objects.get(id=prod_id)
-#       if product_check is not None:
-#         print("heyy")
-#         if(UserCart.objects.filter(user=request.user.id, product_id=prod_id)):
-#           return JsonResponse({'status':"Product Already in Cart"}) 
-#         else :
-#           prod_qty=int(request.POST.get('product_qty'))
-          
-#           if product_check.quantity >= prod_qty:
-#             UserCart.objects.create(user=request.user, product_id=prod_id, quantity=prod_qty)
-#             print("heyyy")
-#             return JsonResponse({'status':"Products Added Succesfully"}) 
-#           else:
-#             return JsonResponse({'status':"only"+ str(product_check.quantity) +"Quantity Available"}) 
-            
-#       else:
-#          return JsonResponse({'status':"No products found"})  
-      
-#     else:
-#       return JsonResponse({'status':"Login to Continue!"})  
-#   return redirect('home.html')
-
 # From Add to Cart btn
-def addtocart(request):  
+def addtocart(request):
     pid = request.GET['pid']
 
     product = Product.objects.get(id=pid)
     offers = Offers.objects.all()
     
     uid = request.user
-    print("pid =", pid)
-    print("uid =", uid)
     if UserCart.objects.filter(product=pid, user=uid).exists():
         cart = UserCart.objects.get(product=pid, user=uid)
         cart.quantity = cart.quantity+1
         cart.save()
         return redirect('mycart')
     else:
+        global offerprice
+        price = 0
+        offerprice=product.selling_price
         for offer in offers:
-            print(offer.product)
-            category=Category.objects.get(product=pid)
             
-            if offer.product == product:
-                price = 0
-                offamount = product.selling_price * offer.offer / 100
-                if offamount > offer.max_value:
-                    price = product.selling_price - offer.max_value
-                else:
-                    price = product.selling_price - offamount
-                print(price)
-                cart = UserCart.objects.create(
-                    user=uid, product=product, quantity=1, price_with_offer=price)
-                cart.save()
-                return redirect('mycart')
-            elif offer.category == category:
-                print(category)
-                print(offer.category)
-                price = 0
-                offamount = product.selling_price * offer.offer / 100
-                if offamount > offer.max_value:
-                    price = product.selling_price - offer.max_value
-                else:
-                    price=product.selling_price-offamount
-                print(price)
-                cart = UserCart.objects.create(user=uid, product=product, quantity=1, price_with_offer=price)
-                cart.save()
-                return redirect('mycart')
+            print(offerprice)  
+            category=Category.objects.get(product=pid)  
+            if offer.product == product or offer.category == category :
+                if offer.is_active==True:
+                    offamount = product.selling_price * offer.offer / 100
+
+                    if offamount > offer.max_value:
+                    
+                        price = product.selling_price - offer.max_value
+                        if price < offerprice:
+                        
+                            offerprice=price
+                    else:
+                    
+                        price = product.selling_price - offamount
+                    
+                        if price < offerprice:
+                            offerprice=price
                 
-        
-        cart = UserCart.objects.create(product=product, user=uid)
-        cart = UserCart.objects.filter(user=uid)
-        return redirect('mycart')
+        cart = UserCart.objects.create(user=uid, product=product, quantity=1, price_with_offer=offerprice)
+        cart.save_base()
+        return redirect('mycart')    
+
 
 # Already in Cart but need to + and -
 def addtomycart(request):
     print(request.method)
     if request.method == 'POST':
-        if request.user.is_authenticated:
-            
+        if request.user.is_authenticated: 
             uid = request.user
             prod_id = int(request.POST.get('product_id'))
             print(prod_id)
@@ -328,8 +296,7 @@ def checkout(request):
         shipping = 0
         total = subtotal+shipping
         return render(request, 'payment.html', {'subtotal': subtotal, 'total': total, 'addresses': address,'cart':cart})     
-    
-    
+   
     elif request.method == 'POST' and 'code' in request.POST:
         user = request.user
         method = request.POST['payment']
@@ -340,26 +307,40 @@ def checkout(request):
         print("address",address)
         total = float(request.POST['amount'])
         code = request.POST['code']
-        print(code)
-        subtotal = 0
-        for i in range(len(cart)):
-            if cart[i].cancel != True:
+        if Coupon.objects.filter(code=code).exists():
+            subtotal = 0
+            for i in range(len(cart)):
+                if cart[i].cancel != True:
+                    if cart[i].price_with_offer !=0:
+                        x = cart[i].price_with_offer*cart[i].quantity
+                        subtotal = subtotal+x
+                    else:
+                        x = cart[i].product.selling_price*cart[i].quantity
+                        subtotal = subtotal+x
+            shipping = 0
+            message=False
+            coupon = Coupon.objects.get(code=code)
+            if total>coupon.min_amount:
+                total = total-coupon.discount
+            else:
+                message = "Minimum Amount is not reached"    
+            return render(request, 'payment.html', { 'subtotal':subtotal,'total': total,'message':message, 'addresses': addresses,'cart':cart, 'code':code, 'offer':coupon})
+        else:
+             message="Invalid"
+             subtotal = 0
+             for i in range(len(cart)):
                 if cart[i].price_with_offer !=0:
                     x = cart[i].price_with_offer*cart[i].quantity
                     subtotal = subtotal+x
                 else:
                     x = cart[i].product.selling_price*cart[i].quantity
                     subtotal = subtotal+x
-        shipping = 0
-        message=False
-        coupon = Coupon.objects.get(code=code)
-        if total>coupon.min_amount:
-            total = total-coupon.discount
-        else:
-            message = "Minimum Amount is not reached"    
-        print(message)
-        print(total)
-        return render(request, 'payment.html', { 'subtotal':subtotal,'total': total,'message':message, 'addresses': addresses,'cart':cart, 'code':code, 'offer':coupon})
+             shipping = 0
+             total = subtotal+shipping 
+             messages.info(request,"No Such Coupons Exists") 
+             print(message)
+             return render(request, 'payment.html', { 'message':message, 'addresses': addresses,'subtotal': subtotal, 'total': total})
+
     else:
         print('else===')
         user = request.user
@@ -377,7 +358,6 @@ def checkout(request):
                     subtotal = subtotal+x
         shipping = 0
         total = subtotal+shipping
-        # return HttpResponse('else')
         return render(request, 'checkout.html', {'subtotal': subtotal, 'total': total, 'addresses': addresses})      
       
 @login_required(login_url='loginpage')
@@ -463,7 +443,6 @@ def payment(request):
         subtotal = 0
         for i in range(len(cart)):
             x = cart[i].product.selling_price*cart[i].quantity
-            # prdct.quantity=prdct.quantity-cart[i].quantity
             subtotal = subtotal+x
         shipping = 0
         total = subtotal + shipping
@@ -500,3 +479,29 @@ def payment(request):
         shipping = 0
         total = subtotal + shipping
         return render(request, 'payment.html', {'subtotal': subtotal, 'total': total, 'cart': cart})                         
+
+
+
+@login_required(login_url='loginpage')
+def returnorder(request):
+    if request.method == 'POST':
+        id=int(request.GET['id'])
+        print(id)
+        order = Order.objects.get(id=id)
+        user = request.user
+        status = 'Return Requested'
+        reason = request.POST['reason']
+        order = Order.objects.filter(id=id).update(status=status, reason=reason)
+        print(reason)
+        print(order)
+        print(status)
+        return redirect('myorder')   
+
+    else:
+        id=int(request.GET['id'])
+        print(id)
+        context={'id':id}
+        return render(request,'returnorder.html',context)
+          
+
+ 

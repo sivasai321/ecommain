@@ -17,7 +17,6 @@
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
 <!-- Default theme -->
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
-    
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
   <!-- Load fonts style after rendering the layout styles -->
@@ -33,7 +32,6 @@
 <section style="background-color: #fff;">
   
   <div class="container py-5">
-    
     <div class="row d-flex justify-content-center">
       <div class="col-md-12 col-lg-10 col-xl-8">
         <div class="card">
@@ -72,9 +70,12 @@
                               <td><input readonly type="text" style="width:50%" name="code" id="code" placeholder="Enter Coupon code" class="form-control w-100"></td>
                               <td><button type="button" disabled class="btn btn-primary mx-2 ">Apply</button></td>
                           </tr>
-                         
+                          
                           {% if message == 'Minimum Amount is not reached' %}
                           <p class="text-danger">{{message}}</p>
+                          {% comment %} {% elif message == "Invalid" %}
+                        
+                          <p class="text-danger">Coupon is not Valid</p> {% endcomment %}
                           {% else %}
                           <p class="text-success">You applied the coupon code {{code}} </p>
                           {% endif %}
@@ -112,8 +113,11 @@
 
                           <tr style="background-color: rgba(0,0,0,.03)">
                             <td><input type="text" style="width:50%" name="code" id="code" placeholder="Enter Coupon code" class="form-control w-100"></td>
-                            <td><button type="submit" class="btn btn-primary mx-2 ">Apply</button></td>
+                            <td><button type="submit" class="btn btn-light mx-2 " style="background:#03f473; color:white;">Apply</button></td>
                         </tr>
+                        {% if message == "Invalid"%}
+                        <p class="text-danger">Coupon is not Valid</p>
+                        {% endif %}
                           
                           <tr>
                               <td>Total</td>
@@ -144,19 +148,15 @@
               
               
               
-            <h4 class="mt-5">Payment Methods</h4>
+            <h4 class="">Payment Methods</h4>
 
-            <div class="mt-4 d-flex justify-content-between align-items-center ">
-              <button type="submit " class="btn text-light mt-1" style="width: 50%; background:#1C3879;">Cash On Delivery</button>
+            <div class="mt-2 d-flex justify-content-between align-items-center ">
+              <button type="submit " class="btn btn-outline-success" style="margin-left:12px; width:51.5%;">Cash On Delivery</button>
             </div>
-            <div class="mt-4 d-flex justify-content-between align-items-center">
-              <button type="button " class="btn btn-primary text-light mt-1 payWithRazorpay" style="width: 50%;">Pay With Razorpay</button>
+            <div class="mt-2 d-flex justify-content-between align-items-center">
+              <button type="button " class="btn btn-primary text-light mt-1 payWithRazorpay"  style="margin-left:12px; width:51.5%;">Pay With Razorpay</button>
             </div>
-            {% comment %} <button type="button" class="btn btn-primary payWithRazorpay w-50 m-1"  data-toggle="modal" data-target="#exampleModal">
-              Pay With Razorpay
-              
-            </button> {% endcomment %}
-
+   
             
 
             <div class="mt-2 d-flex justify-content-between align-items-center">
@@ -178,8 +178,7 @@
 <script src="https://www.paypal.com/sdk/js?client-id=AShn40Fb_4dIhXOVfYkbn6kDhmAI5iWBBVrXvzTNws_hwWxsgxZX_bbbSol6Dnd3P4f6EpCOjIf40Yaz&currency=USD"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
-<script src="{% static "payment.js" %}"></script>
-
+<script src="{% static 'js/payment.js' %}"></script>
 <script>
   paypal.Buttons({
     //onclick: function(data, actions) {

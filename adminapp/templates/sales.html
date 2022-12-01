@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/l1.png' %} ">  <!-- browswer tab logo -->
   <title>
-  {% block title %}{% endblock title %}
+  {% block title %}Sales Report{% endblock title %}
    </title>
 
    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css">
@@ -96,13 +96,15 @@
       cursor: pointer;
     }
     </style>
+   
     <div class="container">
+        <a href="dashboard" class="btn btn-dark px-4" style="text-decoration:none;color:white;">&#11013</a>
         <div class ="row">
-            <div class="col-md-12 bg-success rounded mt-4">
-                <h2 class = "mt-2 fw-bold">  Sales Report</h2>
+            <div class="col-md-12 bg-success rounded mt-4 " hidden>
+                <h2 class = "mt-2 fw-bold"></h2>
                 <hr>
                 <div class="card-header d-flex">
-                    <h4>Generate Sales Report</h4>
+                    <h4></h4>
                     <div class="" style="margin-left:500px">
                         <button type="button" id="myBtn" class="btn btn-outline-light "> Month / Year Wise Report </button>
                     </div>
@@ -161,35 +163,11 @@
                                     
                                 </div>
                                
-                <form action="report" method="POST">
-                    {% csrf_token %}
-                    <div class="form-group">
-                        <div class="d-flex w-100">
-                            <div class="w-50">
-                            <label for="start_date">Start Date</label>
-                            <input type="date" class="form-control " style="width:70%;" id="start_date" name="start_date" >
-                            </div>
-                            <div class="w-50">
-                            <label for ="end_date">End Date</label>
-                            <input type="date" class="form-control  " style="width:70%;" id="end_date" name="end_date" >
-                            </div>
-                        
-                    </div >
-                    <label class="mt-3"><p> Select Format</p></label>
-                    <select name="type" class="ms-3" id ="report_type">
-                        <option value="PDF">PDF</option>
-                        <option value="Excel">Excel</option>
-                    </select>
-                    
-                    {% for message in messages  %}
-                    <span class="text-danger">{{message}}</span>
-                    {% endfor %}            
-                    <button type="submit" id="generate" class="btn btn-light text-success mt-2 mb-1 w-100 ">Generate</button>
-                    </form>
+     
                         
                     </div>
             </div>
-            
+
             {% comment %} AJAX Excel {% endcomment %}
             <div class="col-md-12 bg-light rounded mt-2 pt-3">
                 <h2> SALES REPORT</h2>
@@ -206,7 +184,7 @@
                             <label for ="end_date"><b>End Date</b></label>
                             <input type="date" class="form-control  " style="width:70%;" id="end_date1" name="end_date" >
                             </div>
-                            <button type="submit" id="filter" class="btn btn-success " style="width:100px; height:60px;">FILTER</button>
+                            <button type="submit" id="filter" class="btn btn-dark " style="width:100px; height:60px;">FILTER</button>
                         
                     </div >
                    
@@ -214,28 +192,30 @@
                     {% for message in messages  %}
                     <span class="text-danger">{{message}}</span>
                     {% endfor %}            
-                   
                     </form>
+                    {% comment %} Filter year {% endcomment %}
                 <div class = "d-flex"> 
                     <div class = "" style="width:75%;">
-                        <form action="yearly_sales" method ="POST">
+                        <form action="yearly_sales" method ="POST" name="yearChange">
                             {% csrf_token %}
                             <label class="mt-3"><h6> Select Year </h6></label>
-                                        <select name="year" class="" id ="months">
+                                        <select name="year" class="" id ="years" >
+                                            <option value="{{yr}}" hidden>{{yr}}</option>
                                             <option value="2021">2021</option>
-                                            <option value="2022">2022</option>
+                                            <option  value="2022">2022</option>
                                             <option value="2023">2023</option>
                                             <option value="2024">2024</option>
                                         </select>
-                                <button type="submit" class="btn btn-success mt-2 mb-1 btn-sm">Filter</button>
+                                <button type="submit" class="btn btn-dark mt-2 mb-1 btn-sm">Filter</button>
                             </form>
                     </div>
-                
+                {% comment %} Filter Month {% endcomment %}
                     <div>
                         <form action="monthly_sales" method ="POST">
                             {% csrf_token %}
                             <label class="mt-3"><h6> Select Month</h6></label>
                                 <select name="month" class="" id ="months">
+                                    <option value="{{mts}}" hidden>{{mts}}</option>
                                     <option value="01">January</option>
                                     <option value="02">February</option>
                                     <option value="03">March</option>
@@ -250,7 +230,7 @@
                                     <option value="12">December</option>
         
                                 </select>
-                                <button type="submit" class="btn btn-success mt-2 mb-1 btn-sm">Filter</button>
+                                <button type="submit" class="btn btn-dark mt-2 mb-1 btn-sm">Filter</button>
                             </form>
 
                     </div>
@@ -274,11 +254,7 @@
                             <tr>
                                 <th scope="row">{{ order.id }}</th>
                                 
-                            <td>{{order.user.username}}</td>
-                            {% comment %} <td>{%for cart in carts%}
-                                {{cart.product.name}}<br>
-                                {%endfor%}
-                            </td> {% endcomment %}
+                            <td>{{order.user.username}}</td>                    
                             <td>{{order.ordered_date}}</td>
                             <td>{{order.amount}}</td>
                             <td>{{order.method}}</td>

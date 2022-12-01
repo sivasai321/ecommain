@@ -22,10 +22,10 @@
 
 {% block content %}
 
-<div class="container bg-dark">
+<div class="container">
    
         
-        <div class="col-md-8 my-4 mx-auto" style="width:60%;">
+        <div class="col-md-8 my-4 mx-auto " style="width:60%;">
             <div class="card">
                 <div class="card-header d-flex">
                   <div style="width:75%">
@@ -35,7 +35,7 @@
                     
                     
                 </div>
-                <div class="card-body bg-dark">
+                <div class="card-body">
                     <form action="addcategory" method ="POST" enctype="multipart/form-data">
                     {% csrf_token %}
                         <div class="form-groups pb-2" >
@@ -50,12 +50,19 @@
                         </div>
                           
                         
-                        <div class="form-groups">
-                            <label for="pimage">Choose an Image</label>
-                            <input type="file" class="form-control bg-secondary text-white" name="image" id="image"  placeholder="Category Image"onchange="validateFile()">
-                            <span id="image-error" class="form-group">
+                        <div class="form-group mt-2">
+                          
+                          <input type="file" class="form-control" name="product_image" id="product_image"  placeholder="Category Image" onkeyup="validateFile()">
+                          
+                        </div>
+                        <div class="form-group">
+                          <div id="image-box1" class="image-container"></div>
+                            <div class="d-flex justify-content-end">
+                              <a class="btn btn-sm btn-primary ms-3" id="crop-btn1" style=" margin-top: 10px; display: none;">Crop</a>
+                              <a href="addcategory" class="btn btn-sm btn-danger  ms-3" id="cancel-crop" style=" margin-top: 10px; display: none;">Cancel</a>
+                            </div>
                           </div>
-                        
+                        </div>
             
 
                         <br></br>
@@ -72,6 +79,66 @@
             </div>
         </div>
     </div>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.css"></style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.js"></script>
+ <script type="text/javascript" src="{% static 'addcat.js' %}"></script>
+ <script type="text/javascript">
+  console.log('hello ')
+  const imagebox1 = document.getElementById('image-box1')
+  const crop_btn1 = document.getElementById('crop-btn1')
+  const input1 = document.getElementById('product_image')
+  // When user uploads the image this event will get triggered
+  input1.addEventListener('change', () => {
+   
+    // Getting image file object from the input variable
+    const img_data1 = input1.files[0]
+    // createObjectURL() static method creates a DOMString containing a URL representing the object given in the parameter.
+    // The new object URL represents the specified File object or Blob object.
+    const url1 = URL.createObjectURL(img_data1)
+    // Creating a image tag inside imagebox which will hold the cropping view image(uploaded file) to it using the url created before.
+    imagebox1.innerHTML =` <img src="${url1}" id="image1" style="width:50%;">`
+    // Storing that cropping view image in a variable
+    const image = document.getElementById('product_image')
+    // Displaying the image box
+    document.getElementById('image-box1').style.display = 'block'
+    // Displaying the Crop buttton
+    document.getElementById('crop-btn1').style.display = 'block'
+    document.getElementById('cancel-crop').style.display = 'block'
+    // Hiding the Post button
+    const cropper1 = new Cropper(image1, {
+      autoCropArea: 1,
+      viewMode: 1,
+      scalable: false,
+      zoomable: false,
+      movable: false,
+      minCropBoxWidth: 50,
+      minCropBoxHeight: 50,
+    })
+    // When crop button is clicked this event will get triggered
+      crop_btn1.addEventListener('click', () => {
+      // This method coverts the selected cropped image on the cropper canvas into a blob object
+      cropper1.getCroppedCanvas().toBlob((blob) => {
+        // Gets the original image data
+        let fileInputElement1 = document.getElementById('product_image');
+        // Make a new cropped image file using that blob object, image_data.name will make the new file name same as original image
+        let file1 = new File([blob], img_data1.name, { type: "image/*", lastModified: new Date().getTime() });
+        // Create a new container
+        let container1 = new DataTransfer();
+        // Add the cropped image file to the container
+        container1.items.add(file1);
+        // Replace the original image file with the new cropped image file
+        fileInputElement1.files = container1.files;
+        // document.getElementById('imgView1').src = URL.createObjectURL(fileInputElement1.files[0])
+        // Hide the cropper box
+        document.getElementById('image-box1').style.display = 'none'
+        // Hide the crop button
+        document.getElementById('crop-btn1').style.display = 'none'
+        document.getElementById('cancel-crop').style.display = 'none'
 
- <script src="{% static 'addcat.js' %}"></script>
+
+      })
+    })
+    
+})
+ </script>
 {% endblock content %}

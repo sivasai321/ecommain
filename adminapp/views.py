@@ -1,6 +1,5 @@
 from django.shortcuts import render,redirect
 from store.models import *
-
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .models import *
@@ -15,8 +14,9 @@ from xhtml2pdf import pisa
 import pandas as pd
 from django import template
 
-# Create your views here.
+#-----------------------------------------ADMIN VIEWS-----------------------------------------#
 
+# Administrator Login
 def adminstart(request):
     if 'sessionadmin' in request.session:
         return redirect(to='dashboard')
@@ -40,11 +40,10 @@ def adminstart(request):
         
        return render (request,"adminstart.html")
 
-
+# Administrator Home Page
 @login_required(login_url='adminstart')
 @never_cache
-def dashboard(request):
-    
+def dashboard(request):  
     products=Product.objects.all()
     orders = Order.objects.all().order_by('-id')
     cart = UserCart.objects.all()
@@ -54,18 +53,20 @@ def dashboard(request):
         print(i.amount)
     return render(request,"dashboard.html",{'orders':orders,'products':products,'carts':cart,'amt':amt })
   
-  
+# Administrator Logout  
 @login_required(login_url='adminstart')
 @never_cache
 def logout(request):
     auth.logout(request)
     return redirect('adminstart')  
 
-
-def users(request):
-     user_details=User.objects.filter(is_superuser=False)
+# Render all Users (Excluding Guest Users)
+def users(request): 
+     str=''
+     user_details=User.objects.filter(is_superuser=False).exclude(email=str)
      return render(request, 'users.html',{'user_details':user_details})
 
+# Add a Product
 @login_required(login_url='adminstart')
 @never_cache
 def addproduct(request):
@@ -79,20 +80,18 @@ def addproduct(request):
         tag = request.POST['tag']
         quantity = request.POST['quantity']
         print(request.FILES,"  1111")
-        product_image = request.FILES['product_image']
-        
+        product_image = request.FILES['product_image'] 
         category=Category.objects.get(id=category)
         product = Product.objects.create(name=name,category=category,small_description=small_description,description=description,selling_price=selling_price,product_image=product_image,slug=slug,tag=tag,quantity=quantity)
         # product.category.add(category)
         product.save()
         return redirect('products')
-    else:
-        
+    else: 
         category=Category.objects.all()
         print(category)
-        
         return render(request, 'addproduct.html',{'categories':category})
-    
+
+# Add a new Category    
 @login_required(login_url='adminstart')
 @never_cache
 def addcategory(request):
@@ -103,10 +102,10 @@ def addcategory(request):
         category = Category.objects.create(name=name,slug=slugname,image=image)
         category.save()
         return redirect('category')
-    else:
-        
+    else:    
         return render(request, 'addcategory.html')
 
+#Block User
 @login_required(login_url='adminstart')
 @never_cache
 def block(request):
@@ -116,6 +115,7 @@ def block(request):
     user.save()
     return redirect('users')
 
+# Unblock User
 def unblock(request):
     id=request.GET['id']
     user=User.objects.get(id=id)
@@ -123,6 +123,7 @@ def unblock(request):
     user.save()
     return redirect('users')
 
+# Render all Products
 @login_required(login_url='adminstart')
 @never_cache
 def products(request):
@@ -130,7 +131,7 @@ def products(request):
     return render(request, 'products.html',{'products':product})
 
 
-
+# Render all Categories
 @login_required(login_url='adminstart')
 @never_cache
 def category(request):
@@ -138,7 +139,7 @@ def category(request):
     return render(request, 'category.html', {'categories': categories })
 
 
-
+# Edit Product Details
 @login_required(login_url='adminstart')
 @never_cache
 def editproduct(request):
@@ -147,8 +148,7 @@ def editproduct(request):
     if request.method=='POST':
         id=request.GET['id']
         product = Product.objects.get(id=id)
-        print(id)
-        
+        print(id)       
         name = request.POST['name']
         small_description = request.POST['small_description']
         description = request.POST['description']
@@ -181,9 +181,7 @@ def editproduct(request):
         return render(request, 'edit_product.html',{'product':product,'categories':category})
 
 
-
-
-
+# Delete a Product
 @login_required(login_url='adminstart')
 @never_cache
 def delete_product(request):
@@ -192,6 +190,7 @@ def delete_product(request):
     product.delete()
     return redirect('products')
 
+# Delete a Category
 @login_required(login_url='adminstart')
 @never_cache
 def delete_category(request):
@@ -208,6 +207,7 @@ def orders(request):
     status = ['Ordered','Shipped','Delivered','Cancelled']
     return render(request, 'orders.html',{'orders':order,'carts':cart,'status':status})
 
+# Cancellation of order
 def cancelorder(request):
     user=request.user
     id=request.GET['id']
@@ -220,7 +220,6 @@ def cancelorder(request):
 def updatestatus(request):
     id=request.GET['id']
     status=request.POST['status']
-    
     print(id,status)
     Order.objects.filter(id=id).update(status=status)
     return redirect('orders')
@@ -237,11 +236,11 @@ def addcoupon(request):
     if request.method == 'POST':
         code = request.POST['code']
         discount = request.POST['discount']
-        min_amount = request.POST['discount']
+        min_amount = request.POST['min_amount']
         start_date = request.POST['startdate']
         end_date = request.POST['enddate']
         coupon = Coupon.objects.create(code=code,discount=discount,min_amount=min_amount,start_date=start_date,end_date=end_date)
-        return redirect('addcoupon')
+        return redirect('coupons')
     else:
         return render(request, "add_coupon.html")
 
@@ -357,26 +356,26 @@ def report(request):
         # response['Content-Disposition'] = 'filename="report.xlsx"'
         return FileResponse(open('report.xlsx', 'rb'), as_attachment=True, filename="report.xlsx")
 
-
+# Filter the Month
 @login_required(login_url='adminstart')
 def monthly_sales(request):
     month = request.POST['month']
-    print(month)
+    mtz=int(month)-1
+    month_list=['January','February','March','April','May','June','July','August','September','October','November','December']
+    passed_month=month_list[mtz]
     orders = Order.objects.filter(ordered_date__month=month)
     if len(orders) ==0:
-        # messages.info(request, 'No Orders Found')
-        return render(request, 'sales.html')
-    return render(request, 'sales.html',{'orders':orders})
+        return render(request, 'sales.html',{'mts':passed_month})
+    return render(request, 'sales.html',{'orders':orders,'mts':passed_month})
 
-
+# Filter the year
 @login_required(login_url='adminstart')
 def yearly_sales(request):
     year = request.POST['year']
     orders = Order.objects.filter(ordered_date__year=year)
     if len(orders) ==0:
-        # messages.info(request, 'No Orders Found')
-        return render(request, 'sales.html')
-    return render(request, 'sales.html',{'orders':orders})
+        return render(request, 'sales.html',{'yr':year})
+    return render(request, 'sales.html',{'orders':orders,'yr':year})
 
 # Select Date Function   
 def date_select(request):
@@ -487,19 +486,41 @@ def monthly(request):
 @login_required(login_url='adminstart')
 def blockcoupon(request):
     id=request.GET['id']
-    offer=Offers.objects.filter(id=id).update(is_active=False)
-    
-    return redirect('offers')
+    coupon=Coupon.objects.filter(id=id).update(is_active=False)
+    return redirect('coupons')
 
 # Coupon Management - Unblock Coupon
 @login_required(login_url='adminstart')
 def unblockcoupon(request):
     id=request.GET['id']
-    offer=Offers.objects.filter(id=id).update(is_active=True)
-    
+    coupon=Coupon.objects.filter(id=id).update(is_active=True) 
+    return redirect('coupons')
+
+
+# Offer Management- Block
+@login_required(login_url='adminstart')
+def blockoffer(request):
+    id=request.GET['id']
+    offer=Offers.objects.filter(id=id).update(is_active=False)
     return redirect('offers')
 
+# Offer Management- Unblock
+@login_required(login_url='adminstart')
+def unblockoffer(request):
+    id=request.GET['id']
+    offer=Offers.objects.filter(id=id).update(is_active=True)
+    return redirect('offers')
 
+# Accept Return Request
+@login_required(login_url='adminstart')
+def acceptrequest(request):
+    id=request.GET['id']
+    Order.objects.filter(id=id).update(status='Return Accepted')
+    return redirect('orders')
 
-
-
+# Reject return Request
+@login_required(login_url='adminstart')
+def rejectrequest(request):
+    id=request.GET['id']
+    Order.objects.filter(id=id).update(status='Return Rejected')
+    return redirect('orders')

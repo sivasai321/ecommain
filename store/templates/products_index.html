@@ -1,6 +1,7 @@
 
 {% extends 'base.html' %}
-{% load static %}
+{% load static %} 
+{% load mathfilters %}
 {% block title %}View All Products{% endblock title %}
 
 
@@ -32,40 +33,8 @@
       <div class="row">
 
           <div class="col-lg-3">
-              <h1 class="h2 pb-4 ">Category:{{category.name}}</h1>
-              {% comment %} <ul class="list-unstyled templatemo-accordion">
-                  <li class="pb-3">
-                      <a class="collapsed d-flex justify-content-between h3 text-decoration-none" href="#">
-                          Gender
-                          <i class="fa fa-fw fa-chevron-circle-down mt-1"></i>
-                      </a>
-                      <ul class="collapse show list-unstyled pl-3">
-                          <li><a class="text-decoration-none" href="#">Men</a></li>
-                          <li><a class="text-decoration-none" href="#">Women</a></li>
-                      </ul>
-                  </li>
-                  <li class="pb-3">
-                      <a class="collapsed d-flex justify-content-between h3 text-decoration-none" href="#">
-                          Sale
-                          <i class="pull-right fa fa-fw fa-chevron-circle-down mt-1"></i>
-                      </a>
-                      <ul id="collapseTwo" class="collapse list-unstyled pl-3">
-                          <li><a class="text-decoration-none" href="#">Sport</a></li>
-                          <li><a class="text-decoration-none" href="#">Luxury</a></li>
-                      </ul>
-                  </li>
-                  <li class="pb-3">
-                      <a class="collapsed d-flex justify-content-between h3 text-decoration-none" href="#">
-                          Product
-                          <i class="pull-right fa fa-fw fa-chevron-circle-down mt-1"></i>
-                      </a>
-                      <ul id="collapseThree" class="collapse list-unstyled pl-3">
-                          <li><a class="text-decoration-none" href="#">Bag</a></li>
-                          <li><a class="text-decoration-none" href="#">Sweather</a></li>
-                          <li><a class="text-decoration-none" href="#">Sunglass</a></li>
-                      </ul>
-                  </li>
-              </ul> {% endcomment %}
+              <h5 class="h2 pb-4 ">Category:<h3 class="font-size;10px;">{{category.name}}</h3></h5>
+    
           </div>
 
           <div class="col-lg-9">
@@ -78,47 +47,49 @@
                       <div class="card mb-4 product-wap rounded-0">
                           <div class="card rounded-0">
                             <div class="ribbon-2">{{item.tag}}</div>
-                              <img class="card-img rounded-0 img-fluid" src="{{ item.product_image.url }}">
+                              <img class="card-img rounded-0 img-fluid" style="  height: 400px; object-fit: cover;" src="{{ item.product_image.url }}">
                               <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
                                   <ul class="list-unstyled">
-                                      <li><a class="btn btn-success text-white" href="shop-single.html"><i class="far fa-heart"></i></a></li>
-                                      <li><a class="btn btn-success text-white mt-2" href="shop-single.html"><i class="far fa-eye"></i></a></li>
-                                      <li><a class="btn btn-success text-white mt-2" href="addtocart"><i class="fas fa-cart-plus"></i></a></li>
+                                      <li><a class="btn btn-success text-white" href="#"><i class="far fa-heart"></i></a></li>
+                                      <li><a class="btn btn-success text-white mt-2" href="productview?id={{item.id}}"><i class="far fa-eye"></i></a></li>
+                                      <li><a class="btn btn-success text-white mt-2" href="addtocart?pid={{item.id}}"><i class="fas fa-cart-plus"></i></a></li>
                                   </ul>
                               </div>
                           </div>
                           <div class="card-body">
                               <a href="productview?id={{item.id}}" class="h2 text-decoration-none">{{ item.name }}</a>
-                              {% comment %} <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
-                                  <li>M/L/X/XL</li>
-                                  <li class="pt-2">
-                                      <span class="product-color-dot color-dot-red float-left rounded-circle ml-1"></span>
-                                      <span class="product-color-dot color-dot-blue float-left rounded-circle ml-1"></span>
-                                      <span class="product-color-dot color-dot-black float-left rounded-circle ml-1"></span>
-                                      <span class="product-color-dot color-dot-light float-left rounded-circle ml-1"></span>
-                                      <span class="product-color-dot color-dot-green float-left rounded-circle ml-1"></span>
-                                  </li>
-                              </ul> {% endcomment %}
+                              <h6 class=" ">&#8377; {{item.selling_price|stringformat:'d'}}</h6>
                            
-                              <p class="text-center mb-0">&#8377; {{item.selling_price|stringformat:'d'}}</p>
+                {% for offer in offers %}
+                  {% if  offer.product.id == item.id  or offer.category.id == item.category.id  %} 
+                     
+                  {% with offer1=item.selling_price|div:100|mul:offer.offer|floatformat:2 %}
+                  {% with offer2=item.selling_price|sub:offer1|floatformat:2 %}
+                  {% with offerprice1=item.product.selling_price|sub:offer.max_value %}
+                  {% with offerprice2=item.price_with_offer %}
+                  {% if offerprice1 == offerprice2 %}
+                  {% if offer2 < offer.max_value %}
+                      <p class="fw-bold">Offer Price1 = ₹{{offer2}}/-</p>
+                  {% else %}
+                    <span style="color:green; font-size:20px;"><b>  ₹{{item.selling_price|sub:offer.max_value|stringformat:'d'}}/- &nbsp</b></span>
+                  {% endif %}
+                      
+                  {% endif %}
+                  {% endwith %}
+                  {% endwith %}
+                  {% endwith %}
+                  {% endwith %}
+                  
+                  {% endif %}
+                {% endfor %}
+               
+
                           </div>
                       </div>
                   </div>
-                  {% endfor %}
+            {% endfor %}
                   
-              {% comment %} <div div="row">
-                  <ul class="pagination pagination-lg justify-content-end">
-                      <li class="page-item disabled">
-                          <a class="page-link active rounded-0 mr-3 shadow-sm border-top-0 border-left-0" href="#" tabindex="-1">1</a>
-                      </li>
-                      <li class="page-item">
-                          <a class="page-link rounded-0 mr-3 shadow-sm border-top-0 border-left-0 text-dark" href="#">2</a>
-                      </li>
-                      <li class="page-item">
-                          <a class="page-link rounded-0 shadow-sm border-top-0 border-left-0 text-dark" href="#">3</a>
-                      </li>
-                  </ul>
-              </div> {% endcomment %}
+        
           </div>
 
       </div>
