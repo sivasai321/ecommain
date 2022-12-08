@@ -219,9 +219,6 @@
                         <img class="card-img rounded-0 img-fluid" src="{{ item.product_image.url }}">
                         <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
                             <ul class="list-unstyled">
-                                <li><a class="btn btn-success text-white" href="#"><i class="far fa-heart"></i></a></li>
-                                <li><a class="btn btn-success text-white mt-2" href="#"><i class="far fa-eye"></i></a></li>
-
                                 <li><a class="btn btn-success text-white mt-2" href="addtocart?pid={{item.id}}"><i class="fas fa-cart-plus"></i></a></li>
                             </ul>
                         </div>
@@ -229,16 +226,7 @@
                     <div class="card-body">
                         
                         <a href="productview?id={{item.id}}" class="h2 text-decoration-none">{{ item.name }}</a>
-                        {% comment %} <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
-                            <li>M/L/X/XL</li>
-                            <li class="pt-2">
-                                <span class="product-color-dot color-dot-red float-left rounded-circle ml-1"></span>
-                                <span class="product-color-dot color-dot-blue float-left rounded-circle ml-1"></span>
-                                <span class="product-color-dot color-dot-black float-left rounded-circle ml-1"></span>
-                                <span class="product-color-dot color-dot-light float-left rounded-circle ml-1"></span>
-                                <span class="product-color-dot color-dot-green float-left rounded-circle ml-1"></span>
-                            </li>
-                        </ul> {% endcomment %}
+                   
                      
                         <p class="text-center mb-0">&#8377; {{item.selling_price|stringformat:'d'}}</p>
                     </div>
@@ -248,45 +236,6 @@
         </div>
     </section>
     <!-- End Categories of The Month -->
-
-
-    {% comment %} <!-- Start Featured Product -->
-    <section class="bg-light">
-        <div class="container py-5">
-            <div class="row text-center py-3">
-                <div class="col-lg-6 m-auto">
-                    <h1 class="h1">Featured Product</h1>
-                    <p>
-                        Reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                        Excepteur sint occaecat cupidatat non proident.
-                    </p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12 col-md-4 mb-4">
-                    <div class="card h-100">
-                        <a href="shop-single.html">
-                            <img src="./assets/img/feature_prod_01.jpg" class="card-img-top" alt="...">
-                        </a>
-                        <div class="card-body">
-                            <ul class="list-unstyled d-flex justify-content-between">
-                              <!-- cash and card content -->
-                                <li class="text-muted text-right">$240.00</li>
-                            </ul>
-                            <a href="shop-single.html" class="h2 text-decoration-none text-dark">Gym Weight</a>
-                            <p class="card-text">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt in culpa qui officia deserunt.
-                            </p>
-                          
-                        </div>
-                    </div>
-                </div>
-                
-               
-            </div>
-        </div>
-    </section> {% endcomment %}
-    <!-- End Featured Product -->
 
 <!-- Start Footer -->
 <footer class="bg-dark" id="tempaltemo_footer">
@@ -302,7 +251,7 @@
                   </li>
                   <li>
                       <i class="fa fa-phone fa-fw"></i>
-                      <a class="text-decoration-none" href="tel:730-657-5043">7306575043</a>
+                      <a class="text-decoration-none" href="tel:730-657-5043">7306575xxx</a>
                   </li>
                   <li>
                       <i class="fa fa-envelope fa-fw"></i>

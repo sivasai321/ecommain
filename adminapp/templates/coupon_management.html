@@ -101,7 +101,7 @@
                 <h4>Coupon Management</h4>
                 </div>
                 <div >
-                <a class="btn btn-primary " href ="addcoupon">Add Coupon</a>
+                <a class="btn btn-outline-success " href ="addcoupon">Add Coupon</a>
                 </div>
             </div>
             <div class="card-body">
@@ -127,7 +127,7 @@
                             <td>{{coupon.start_date}}</td>
                             <td>{{coupon.end_date}}</td>
                             <td> {% if coupon.is_active %}
-                                <a style=" background:#CCEDD2; " class="btn" href= "blockcoupon?id={{coupon.id}}"><i style=""onclick="return confirm('Are you sure to block '+' {{coupon.code}} ?')">Block</i>
+                                <a style=" " class="btn btn-outline-danger" href= "blockcoupon?id={{coupon.id}}"><i style=""onclick="return confirm('Are you sure to block '+' {{coupon.code}} ?')">Block</i>
                                     </a>
                                 {% else %}
                                 <a style="background:#CCEDD2;" class="btn" href= "unblockcoupon?id={{coupon.id}}"><i style="y"onclick="return confirm('Are you sure to unblock '+' {{coupon.code}} ?')"</i>

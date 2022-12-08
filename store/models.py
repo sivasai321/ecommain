@@ -127,4 +127,17 @@ class Coupon(models.Model):
     def __str__(self):
         return self.code
 
-      
+class Images(models.Model):
+    image = models.ImageField(null=True, blank=True, upload_to='assets/images')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.image.url
+
+    @property
+    def imageURL(self):
+        try:
+            url = self.image.url
+        except:
+            url = ''
+        return url      

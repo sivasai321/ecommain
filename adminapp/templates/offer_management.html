@@ -161,9 +161,9 @@
                             <td>{{offer.product.name}}</td>
                             <td>
                                 {% if offer.is_active %}
-                                <a class="btn btn-primary" onclick="blockOffer({{offer.id}})" >Block</i></a>
+                                <a class="btn btn-danger text-white" onclick="blockOffer({{offer.id}})" >Block</i></a>
                                 {% else %}
-                                <a class="btn btn-primary" onclick="UnblockOffer({{offer.id}})" >Unblock</i></a>
+                                <a class="btn btn-primary text-white" onclick="UnblockOffer({{offer.id}})" >Unblock</i></a>
                                 {% endif %}
                             </td>
                         </tr>
@@ -208,7 +208,7 @@
                             <td>{{offer.category.name}}</td>
                             <td>
                                 {% if offer.is_active %}
-                                <a class="btn btn-primary" onclick="blockOffer({{offer.id}})" >Block</i></a>
+                                <a class="btn btn-danger text-white" onclick="blockOffer({{offer.id}})" >Block</i></a>
                                 {% else %}
                                 <a class="btn btn-primary" onclick="UnblockOffer({{offer.id}})" >Unblock</i></a>
                                 {% endif %}

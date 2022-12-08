@@ -186,13 +186,13 @@
                               <td>{% if order.cancel %}
                                   Order Canceled
                                   {% elif order.status == 'Return Requested'%}
-                                  <button type="button" id="myBtn" class="btn"> Review Request </button>
+                                  <button type="button" id="myBtn" class="btn btn-outline-dark"> Review Request </button>
                                   <div id="myModal" class="modal">
   
                                       <!-- Modal content -->
                                       <div class="modal-content">
                                         <span class="close">&times;</span>
-                                        <h3> Reason For Return </h3>
+                                        <h3 class="btn "> Reason For Return </h3>
                                           <p>{{order.reason}}</p>
                                           <div class="row ">
                                               <a href="acceptrequest?id={{order.id}}" class="my-1 btn btn-success">Accept</a>
@@ -202,19 +202,7 @@
                                       
                                   </div>
                                   {% elif order.status == 'Return Accepted' or order.status == 'Return Rejected' or order.status == 'Delivered' %}
-                                  {% comment %} <form action="updatestatus?id={{order.id}}" method="POST">
-                                      {% csrf_token %}
-                                          <select name="status" class="" id="status">
-                                              <option value="0">Update status</option>
-                                              
-                                              {% for i in returnstatus %}
-                                              <option value="{{i}}">{{i}}</option>
-                                             
-                                              {% endfor %}
-                                              
-                                          </select>
-                                          <button type="submit" id ="btn1"class="btn btn-primary">Update</button>
-                                      </form> {% endcomment %}
+                            
                                   {% elif order.status == ''%}
                                   <form action="updatestatus?id={{order.id}}" method="POST">
                                   {% csrf_token %}

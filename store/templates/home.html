@@ -3,6 +3,27 @@
 {% load static %}
 {% block title %}Home Page{% endblock title %}
 {% block content %}
+<style>
+
+    .ribbon-2 {
+      --f: 10px; /* control the folded part*/
+      --r: 15px; /* control the ribbon shape */
+      --t: 10px; /* the top offset */
+      
+      position: absolute;
+      inset: var(--t) calc(-1*var(--f)) auto auto;
+      padding: 0 10px var(--f) calc(10px + var(--r));
+      clip-path: 
+        polygon(0 0,100% 0,100% calc(100% - var(--f)),calc(100% - var(--f)) 100%,
+          calc(100% - var(--f)) calc(100% - var(--f)),0 calc(100% - var(--f)),
+          var(--r) calc(50% - var(--f)/2));
+      background: #14A44D;
+      color:#fff;
+      box-shadow: 0 calc(-1*var(--f)) 0 inset #1b5e20;
+    }
+    }
+ 
+    </style>
     <!-- Start Banner Hero -->
     <div id="template-mo-zay-hero-carousel" class="carousel slide" data-bs-ride="carousel">
         <ol class="carousel-indicators">
@@ -92,56 +113,35 @@
                 </p>
             </div>
         </div>
-        {% comment %} <div class="row">
-          {% for item in category %}
-            <div class="col-12 col-md-4 p-5 mt-3">
-                <a href="collectionsview?id={{item.id}} "><img src="{{item.image.url}}" class="rounded-circle img-fluid border"></a>
-                <h5 class="text-center mt-3 mb-3">{{ item.name }}</h5>
-                <p class="text-center"><a class="text-success" href="collectionsview?id={{item.id}}" >Go Shop</a></p>
-            </div>
-            {% endfor %}
-        </div> {% endcomment %}
-    </section>
-    <!-- End Categories of The Month -->
+        <div class="row">
+            {%for item in products %}
+            <div class="col-md-4">
+                <div class="card mb-4 product-wap rounded-0">
+                    <div class="card rounded-0">
+                      <div class="ribbon-2">{{item.tag}}</div>
+                        <img class="card-img rounded-0 img-fluid" src="{{ item.product_image.url }}">
+                        <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
+                            <ul class="list-unstyled">
+                                {% comment %} <li><a class="btn btn-success text-white" href="#"><i class="far fa-heart"></i></a></li> {% endcomment %}
+                                <li><a class="btn btn-success text-white mt-2" href="productview?id={{item.id}}"><i class="far fa-eye"></i></a></li>
 
-
-    {% comment %} <!-- Start Featured Product -->
-    <section class="bg-light">
-        <div class="container py-5">
-            <div class="row text-center py-3">
-                <div class="col-lg-6 m-auto">
-                    <h1 class="h1">Featured Product</h1>
-                    <p>
-                        Reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                        Excepteur sint occaecat cupidatat non proident.
-                    </p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12 col-md-4 mb-4">
-                    <div class="card h-100">
-                        <a href="shop-single.html">
-                            <img src="./assets/img/feature_prod_01.jpg" class="card-img-top" alt="...">
-                        </a>
-                        <div class="card-body">
-                            <ul class="list-unstyled d-flex justify-content-between">
-                              <!-- cash and card content -->
-                                <li class="text-muted text-right">$240.00</li>
+                                <li><a class="btn btn-success text-white mt-2" href="addtocart?pid={{item.id}}"><i class="fas fa-cart-plus"></i></a></li>
                             </ul>
-                            <a href="shop-single.html" class="h2 text-decoration-none text-dark">Gym Weight</a>
-                            <p class="card-text">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt in culpa qui officia deserunt.
-                            </p>
-                          
                         </div>
                     </div>
+                    <div class="card-body">
+                        
+                        <a href="productview?id={{item.id}}" class="h2 text-decoration-none">{{ item.name }}</a>
+                   
+                     
+                        <p class="text-center mb-0">&#8377; {{item.selling_price|stringformat:'d'}}</p>
+                    </div>
                 </div>
-                
-               
             </div>
+            {% endfor %}
         </div>
-    </section> {% endcomment %}
-    <!-- End Featured Product -->
+    </section>
+
 
 
     <!-- Start Script -->

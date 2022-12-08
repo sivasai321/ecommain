@@ -21,9 +21,9 @@
         polygon(0 0,100% 0,100% calc(100% - var(--f)),calc(100% - var(--f)) 100%,
           calc(100% - var(--f)) calc(100% - var(--f)),0 calc(100% - var(--f)),
           var(--r) calc(50% - var(--f)/2));
-      background: #F54343;
+      background: #14A44D;
       color:#fff;
-      box-shadow: 0 calc(-1*var(--f)) 0 inset #9B301A;
+      box-shadow: 0 calc(-1*var(--f)) 0 inset #1b5e20;
     }
  
     </style>
@@ -32,11 +32,12 @@
   <div class="container-fluid py-5">
       <div class="row">
 
-          <div class="col-lg-3">
-              <h5 class="h2 pb-4 ">Category:<h3 class="font-size;10px;">{{category.name}}</h3></h5>
-    
-          </div>
-
+        <div class="col-lg-3">
+            <h2 style=" text-align: center; padding-bottom:40px;">Categories:</h2>
+            {% for cat in catall %}
+            <a href="collectionsview?id={{cat.id}}"class="h2 pb-4 text-decoration-none"><h3 style="color:#14A44D; text-align: center;box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;">{{cat.name}}</h3></a><br>
+            {% endfor %}
+        </div>
           <div class="col-lg-9">
               <div class="row">
         
@@ -50,19 +51,19 @@
                               <img class="card-img rounded-0 img-fluid" style="  height: 400px; object-fit: cover;" src="{{ item.product_image.url }}">
                               <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
                                   <ul class="list-unstyled">
-                                      <li><a class="btn btn-success text-white" href="#"><i class="far fa-heart"></i></a></li>
                                       <li><a class="btn btn-success text-white mt-2" href="productview?id={{item.id}}"><i class="far fa-eye"></i></a></li>
                                       <li><a class="btn btn-success text-white mt-2" href="addtocart?pid={{item.id}}"><i class="fas fa-cart-plus"></i></a></li>
                                   </ul>
                               </div>
                           </div>
                           <div class="card-body">
-                              <a href="productview?id={{item.id}}" class="h2 text-decoration-none">{{ item.name }}</a>
-                              <h6 class=" ">&#8377; {{item.selling_price|stringformat:'d'}}</h6>
+                              <a href="productview?id={{item.id}}" class="h2 text-decoration-none">{{ item.name }} &nbsp</a><br>
+                              <span class=" ">&#8377; {{item.selling_price|stringformat:'d'}}</span>
                            
                 {% for offer in offers %}
                   {% if  offer.product.id == item.id  or offer.category.id == item.category.id  %} 
-                     
+                  {% comment %} <span class=" "><s>&#8377; {{item.selling_price|stringformat:'d'}}</s></span> {% endcomment %}
+                           
                   {% with offer1=item.selling_price|div:100|mul:offer.offer|floatformat:2 %}
                   {% with offer2=item.selling_price|sub:offer1|floatformat:2 %}
                   {% with offerprice1=item.product.selling_price|sub:offer.max_value %}
@@ -71,7 +72,7 @@
                   {% if offer2 < offer.max_value %}
                       <p class="fw-bold">Offer Price1 = ₹{{offer2}}/-</p>
                   {% else %}
-                    <span style="color:green; font-size:20px;"><b>  ₹{{item.selling_price|sub:offer.max_value|stringformat:'d'}}/- &nbsp</b></span>
+                    <span style=" margin-left: 10px; color:green; font-size:17px;"><i><b>Offer:&nbsp ₹{{item.selling_price|sub:offer.max_value|stringformat:'d'}}/- &nbsp</i></b></span>
                   {% endif %}
                       
                   {% endif %}
@@ -81,9 +82,9 @@
                   {% endwith %}
                   
                   {% endif %}
+                  
                 {% endfor %}
-               
-
+            
                           </div>
                       </div>
                   </div>

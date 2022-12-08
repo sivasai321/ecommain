@@ -79,12 +79,16 @@ def addproduct(request):
         slug = request.POST['slug']
         tag = request.POST['tag']
         quantity = request.POST['quantity']
-        print(request.FILES,"  1111")
-        product_image = request.FILES['product_image'] 
+        product_image = request.FILES['product_image']
+        product_image2 = request.FILES['image2']
+        product_image3  = request.FILES['image3']
         category=Category.objects.get(id=category)
         product = Product.objects.create(name=name,category=category,small_description=small_description,description=description,selling_price=selling_price,product_image=product_image,slug=slug,tag=tag,quantity=quantity)
-        # product.category.add(category)
         product.save()
+        image2 = Images.objects.create(image=product_image2,product=product)
+        image2.save()
+        image3 = Images.objects.create(image=product_image3,product=product)
+        image3.save()
         return redirect('products')
     else: 
         category=Category.objects.all()
@@ -147,8 +151,7 @@ def editproduct(request):
     product = Product.objects.get(id=id)
     if request.method=='POST':
         id=request.GET['id']
-        product = Product.objects.get(id=id)
-        print(id)       
+        product = Product.objects.get(id=id)      
         name = request.POST['name']
         small_description = request.POST['small_description']
         description = request.POST['description']
@@ -156,10 +159,8 @@ def editproduct(request):
         slug= request.POST['slug']
         tag= request.POST['tag']
         selling_price= request.POST['selling_price']
-        print(request.FILES,"  1111")
         product_image = request.FILES['product_image']
         quantity = request.POST['quantity']
-        
         category=Category.objects.get(id=category)
         product = Product.objects.get(id=id)
         product.name=name

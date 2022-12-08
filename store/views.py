@@ -39,10 +39,11 @@ def collections(request):                                  # To show all the Cat
 def collectionsview(request):                         # products_index.html -- to show all products inside a category
   id=request.GET['id']
   offers= Offers.objects.all
+  catall=Category.objects.all
   if(Category.objects.filter(id=id,status=1)):
    products=Product.objects.filter(category__id=id)
    category=Category.objects.filter(id=id).first()
-   context={'products':products,'category':category, 'offers':offers}
+   context={'products':products,'category':category, 'offers':offers,'catall':catall}
    return render(request,"products_index.html",context)
   
   else:
@@ -55,47 +56,44 @@ def collectionsview(request):                         # products_index.html -- t
 def productview(request):              # to detail individual products
 
     id = request.GET['id']
-    product = Product.objects.get(id=id)
-    
-    print(product)
-    print(id)
-    
-    prdct = Product.objects.filter(id=id)
-    print(prdct)
-    offer_product=''
-    offer_category=''
-    categories=Category.objects.get(product=id)
-    print(categories.id)
-    if Offers.objects.filter(product_id=id).exists():        #product offer
-        offer_product=Offers.objects.get(product_id=id)
-        print("Product Offer",offer_product.offer)
-    if Offers.objects.filter(category=categories.id).exists():            #Category offer
-        offer_category = Offers.objects.get(category=categories.id)
-        print("Category Offer",offer_category.offer)
-        
-
-    offers = Offers.objects.all()
-    for offer in offers:
-        print(offer.product)
-        print(prdct[0])
-        if offer.product == prdct[0]:
-            for ofr in offers:
-              
-                if ofr.category == product.category:
-                    print("ofr=",ofr.name)
-                    if ofr.offer<offer.offer:
-                        print("offer",offer.offer)
-                            
-                        return render(request, 'viewproducts.html',{'product': product,  'offer': offer, 'offer_category':offer_category, 'offer_product': offer_product})
-                    else:
-                        return render(request, 'viewproducts.html',{'product': product,  'offer':ofr,  'offer_category':offer_category, 'offer_product': offer_product})
-                    
-        else: 
-            for ofr in offers:
-                if ofr.category == product.category:
-                    print("elseoffer=",ofr.name)
-                    return render(request, 'viewproducts.html',{'product': product,  'offer':ofr, 'offer_category':offer_category, 'offer_product': offer_product})
-        return render(request, 'viewproducts.html', {'product': product,  'offer':ofr, 'offer_category':offer_category, 'offer_product': offer_product})
+    if Product.objects.filter(id=id).exists():     
+        product = Product.objects.get(id=id)
+        prdct = Product.objects.filter(id=id)
+        offer_product=''
+        offer_category=''
+        categories=Category.objects.get(product=id)
+   
+        if Offers.objects.filter(product_id=id).exists():        #product offer
+            offer_product=Offers.objects.get(product_id=id)
+            print("Product Offer",offer_product.offer)
+        if Offers.objects.filter(category=categories.id).exists():            #Category offer
+            offer_category = Offers.objects.get(category=categories.id)
+            print("Category Offer",offer_category.offer)
+            
+        images = Images.objects.filter(product=prdct[0].id)
+        print(images,"image")
+        offers = Offers.objects.all()
+        for offer in offers:
+            print(offer.product)
+            print(prdct[0])
+            if offer.product == prdct[0]:
+                for ofr in offers:
+                
+                    if ofr.category == product.category:
+                        print("ofr=",ofr.name)
+                        if ofr.offer<offer.offer:
+                            print("offer",offer.offer)
+                                
+                            return render(request, 'viewproducts.html',{'product': product,'images': images,  'offer': offer, 'offer_category':offer_category, 'offer_product': offer_product})
+                        else:
+                            return render(request, 'viewproducts.html',{'product': product,'images': images,  'offer':ofr,  'offer_category':offer_category, 'offer_product': offer_product})
+                        
+            else: 
+                for ofr in offers:
+                    if ofr.category == product.category:
+                        print("elseoffer=",ofr.name)
+                        return render(request, 'viewproducts.html',{'product': product,'images': images,   'offer':ofr, 'offer_category':offer_category, 'offer_product': offer_product})
+        return render(request, 'viewproducts.html', {'product': product, 'images': images,  'offer':ofr, 'offer_category':offer_category, 'offer_product': offer_product})
     else:
         return redirect('home')
  

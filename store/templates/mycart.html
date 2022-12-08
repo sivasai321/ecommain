@@ -178,28 +178,15 @@
                     <!-- Data -->
                     <h5><strong>{{item.product.name}}</strong></h5>
                     <p>Category: {{item.product.category}}</strong></p>
-                    <a href="removecart?id={{item.id}}" class="btn btn-danger">Remove</a>
-                    {% comment %} <a type="button" class="btn btn-danger delete-cart-item btn-sm me-1 mb-2" href="removecart?id={{item.id}}" data-mdb-toggle="tooltip"
-                      title="Remove item">
-                      <i class="fas fa-trash"></i>
-                    </a> {% endcomment %}
-                        
-                     {% comment %} WISHLIST  {% endcomment %}
-
-                    {% comment %} <button type="button" class="btn btn-danger btn-sm mb-2" data-mdb-toggle="tooltip"
-                      title="Move to the wish list">
-                      <i class="fas fa-heart"></i>
-                    </button> {% endcomment %}
-
+                    <a href="removecart?id={{item.id}}" class="btn btn-outline-danger">Remove</a>
+           
                     <!-- Data -->
                   </div>
 
                   {% comment %} Offers {% endcomment %}
       
                   {% for offer in offers %}
-                
-                   
-                  
+
                   {% if  offer.product.id == cart.product.id  or offer.category.id == cart.product.category.id  %} 
                      
                   {% with offer1=cart.product.selling_price|div:100|mul:offer.offer|floatformat:2 %}
@@ -210,11 +197,11 @@
                       <p class="fw-bold text-success">Offer: {{offer.offer}}% off upto ₹{{offer.max_value}}/-
                   
                   {% if offer2 < offer.max_value %}
-                      <br><p class="fw-bold">Offer Price = ₹{{offer2}}/-</p></p>
+                      <br><p class="fw-bold">Offer Price = ₹{{offer2}}/-</p>
                      
                   {% else %}
                 
-                      <br>Offer Price = ₹{{item.product.selling_price|sub:offer.max_value}}/-</p>
+                  <span style="color:blue;">   Offer Price = ₹{{item.product.selling_price|sub:offer.max_value|floatformat:0}}/-</span>
                   {% endif %}
                       
                   {% endif %}
@@ -243,7 +230,6 @@
 
                       <span id="{{item.id}}" class="m-2"> {{item.quantity}} </span>
                     
-                    {% comment %} <input id="form1" min="1" name="quantity" value="1" type="number" class="form-control qty-input text-center" /> {% endcomment %}
                     
                     
                     <button class="input_group-text changeQuantity  increment-btn"  onclick="up({{item.id}})">
@@ -258,9 +244,9 @@
                     <!-- Quantity -->
     
                     <!-- Price -->
-                    <h6 class="text-start text-md-center">
+                    <span class="text-start text-md-center">
                       <strong>Rs {{item.product.selling_price}}</strong>
-                    </h6>
+                    </span>
                     <!-- Price -->
                   </div>
                 </div>
@@ -326,10 +312,6 @@
      <!-- JavaScript -->
      <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
      <script>
- 
- 
- 
-      
        function up(id){
         var id=id
         $.ajax({
