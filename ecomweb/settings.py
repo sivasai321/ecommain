@@ -92,9 +92,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'kixkstxrt',
-        'USER': 'postgres',
+        'USER': 'adminx',
         'PASSWORD' : 'password',
-        'HOST' : 'localhost',
+        'HOST' : 'database-kickstart.culjes9a2akn.ap-south-1.rds.amazonaws.com',
         'PORT' : '5432'
     }
             }
