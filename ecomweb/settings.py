@@ -33,6 +33,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
+CSRF_TRUSTED_ORIGINS = ['https://kixkstxrt.store', 'https://www.kixkstxrt.store']
 
 # Application definition
 
@@ -62,6 +63,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'ecomweb.urls'
+
 
 TEMPLATES = [
     {
