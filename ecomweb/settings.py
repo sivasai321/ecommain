@@ -12,13 +12,14 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 import os
+from decouple import config
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-TWILIO_ACCOUNT_SID='AC1e10d70886b43a04dab18511ee72d1e3'
-TWILIO_AUTH_TOKEN='877fba438197a319fe55d803440a3aa2'
+TWILIO_ACCOUNT_SID=config('TWILIO_ACCOUNT_SID')
+TWILIO_AUTH_TOKEN=config('TWILIO_AUTH_TOKEN')
 
 
 
@@ -26,10 +27,10 @@ TWILIO_AUTH_TOKEN='877fba438197a319fe55d803440a3aa2'
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-b%o+^m)_gc^*9kljp=c^0=gzlv+545k9n##n0==^vow0+f+u4!'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 
