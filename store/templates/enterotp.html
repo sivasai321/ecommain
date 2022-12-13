@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+
 {% load static %}
 
 {% block css_files %}
@@ -13,14 +13,12 @@
 <script src="https://kit.fontawesome.com/bdfb96850f.js" crossorigin="anonymous"></script>
 
 {% endblock css_files %}
-{% block page_title  %}
- SignUp
-{% endblock  %}
+
 
 {% block content %}
 <div class="container">
     <div class="row">
-        <h3 style="color: #17a2b8;" class="col-sm-offset-3 col-sm-6">MOBILE NUMBER VERIFICATION</h3>
+        <h2 style="color: #17a2b8;" class="col-sm-offset-3 col-sm-6">MOBILE NUMBER VERIFICATION</h2>
    </div>
     <br />
 
@@ -38,7 +36,7 @@
                 placeholder=" Enter OTP" onkeyup="validateotp()" />
                 <input type="hidden" name="phone" value= "{{phone}}" id="phone">
                 <div id="otp-error" class="form-group "></div>
-
+{{generatedotp}}:{{otp}}
               
                 {%for message in messages%}
                 <h5 class="text-danger">{{message}}</h5>

@@ -11,7 +11,7 @@ var passwordError = document.getElementById("password-error");
 
 
 function validatefname() {
-    alert('heyyy')
+    
     var fname = document.getElementById('fname').value.trim();
 
     if( (fname.length == 0)  ){

@@ -30,7 +30,8 @@ TWILIO_AUTH_TOKEN=config('TWILIO_AUTH_TOKEN')
 SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG',default=False,cast=bool)
+# DEBUG = config('DEBUG',default=False,cast=bool)
+DEBUG  = True
 
 ALLOWED_HOSTS = ["*"]
 
@@ -39,21 +40,24 @@ CSRF_TRUSTED_ORIGINS = ['https://kixkstxrt.store', 'https://www.kixkstxrt.store'
 # Application definition
 
 INSTALLED_APPS = [
+    "whitenoise",
+    'django.contrib.staticfiles',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
     'store',
     'adminapp',
     'django_twilio',
     'mathfilters',
     'guest_user',
+
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    # "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -143,13 +147,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = '/static/'
-MEDIA_URL='/assets/'
-MEDIA_ROOT=os.path.join(BASE_DIR, 'static')
-STATICFILES_DIRS =(
-    os.path.join(BASE_DIR, 'static'),
-)
-
-STATIC_ROOT = os.path.join(BASE_DIR, 'static/admin')
+STATIC_ROOT = BASE_DIR / 'static'
+STATICFILES_DIRS = [
+    'ecomweb/static',
+    ]
+MEDIA_URL='/media/'
+MEDIA_ROOT= BASE_DIR / 'media'
 
 
 # Default primary key field type
@@ -159,3 +162,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 ACCOUNT_SID = TWILIO_ACCOUNT_SID
 AUTH_TOKEN = TWILIO_AUTH_TOKEN
+
+
+# STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"

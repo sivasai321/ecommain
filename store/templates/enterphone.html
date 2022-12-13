@@ -47,8 +47,7 @@
                 {%for message in messages%}
                 <h5 class="text-warning" style="color:#ff0000;"><b>{{message}}</b></h5>
                 {% endfor %}           
-                    <button class="btn btn-success" style="background:#03f473;" type="submit" 
-                    onclick="return validateform()"><b>NEXT<b></button>
+                    <button class="btn btn-success" style="background:#03f473;" type="submit" ><b>NEXT<b></button>
                 <div id="submit-error" class="form-group"></div>
             </form>
         </div>
@@ -56,6 +55,28 @@
 </div>
 </div>
 
-<script src="{% static 'js/signup.js' %}"></script>
-
+{% comment %} <script src="{% static 'js/signup.js' %}"></script> {% endcomment %}
+<script>
+    var mobError=document.getElementById('mobnum-error')
+    function validatemobnum()
+    {
+        console.log('hello')
+        var mob=document.getElementById('mobnum').value;
+        if(mob.length===0)
+        {
+            mobError.innerHTML='Provide mobile number';
+            return false;
+        }
+        else if(mob.length<10)
+        {
+            mobError.innerHTML='Minimum 10 digits required';
+            return false;  
+        }
+        else
+        {
+            mobError.innerHTML='Number is valid';
+            return true;
+        }
+    }
+</script>
 

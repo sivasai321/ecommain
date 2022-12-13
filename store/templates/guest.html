@@ -35,9 +35,9 @@
             polygon(0 0,100% 0,100% calc(100% - var(--f)),calc(100% - var(--f)) 100%,
               calc(100% - var(--f)) calc(100% - var(--f)),0 calc(100% - var(--f)),
               var(--r) calc(50% - var(--f)/2));
-          background: #F54343;
+          background: #14A44D;
           color:#fff;
-          box-shadow: 0 calc(-1*var(--f)) 0 inset #9B301A;
+          box-shadow: 0 calc(-1*var(--f)) 0 inset #1b5e20;
         }
      
         </style>
@@ -50,7 +50,7 @@
     <nav class="navbar navbar-expand-lg navbar-light shadow">
         <div class="container d-flex justify-content-between align-items-center">
 
-            <a class="navbar-brand text-danger logo h1 align-self-center" href="index.html">
+            <a class="navbar-brand text-danger logo h1 align-self-center" href="#">
               <img class="img-fluid " style="height:40px" src="{% static 'img/logogreen.png' %} " alt="">
             </a>
 
@@ -62,7 +62,7 @@
                 <div class="flex-fill">
                     <ul class="nav navbar-nav d-flex justify-content-between mx-lg-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Home</a>
+                            <a class="nav-link" href="#">Welcome to kixkstxrt</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">About Us</a>
@@ -85,7 +85,7 @@
                         </div>
                     </div>
                     <a class="nav-icon d-none d-lg-inline" href="#" data-bs-toggle="modal" data-bs-target="#templatemo_search">
-                        <i class="fa fa-fw fa-search text-dark mr-2"></i>
+                       
                     </a>
                     <a class="nav-icon position-relative text-decoration-none" href="cart">
                         <i class="fa fa-fw fa-cart-arrow-down text-dark mr-1"></i>
@@ -225,7 +225,7 @@
                     </div>
                     <div class="card-body">
                         
-                        <a href="productview?id={{item.id}}" class="h2 text-decoration-none">{{ item.name }}</a>
+                        <a href="#" class="h2 text-decoration-none">{{ item.name }}</a>
                    
                      
                         <p class="text-center mb-0">&#8377; {{item.selling_price|stringformat:'d'}}</p>
