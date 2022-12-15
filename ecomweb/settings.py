@@ -33,7 +33,7 @@ SECRET_KEY = config('SECRET_KEY')
 # DEBUG = config('DEBUG',default=False,cast=bool)
 DEBUG  = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["65.1.13.91", "0.0.0.0", "localhost", "127.0.0.1"]
 
 CSRF_TRUSTED_ORIGINS = ['https://kixkstxrt.store', 'https://www.kixkstxrt.store']
 
@@ -98,10 +98,10 @@ WSGI_APPLICATION = 'ecomweb.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'kixkstxrt',
+        'NAME': 'ecomweb2',
         'USER': 'adminx',
         'PASSWORD' : 'password',
-        'HOST' : 'database-kickstart.culjes9a2akn.ap-south-1.rds.amazonaws.com',
+        'HOST' : 'database-3.culjes9a2akn.ap-south-1.rds.amazonaws.com',
         'PORT' : '5432'
     }
             }
