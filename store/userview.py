@@ -30,7 +30,6 @@ from twilio.rest import Client
 
 # --------------------------VIEWS-----------------------------------#
 generatedotp=0
-print("gen-top",generatedotp)
 # Guest User
 @allow_guest_user()
 @never_cache
