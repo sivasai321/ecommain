@@ -33,9 +33,9 @@ SECRET_KEY = config('SECRET_KEY')
 # DEBUG = config('DEBUG',default=False,cast=bool)
 DEBUG  = True
 
-ALLOWED_HOSTS = ["3.7.59.116", "0.0.0.0", "localhost", "127.0.0.1"]
+ALLOWED_HOSTS = ["3.7.59.116", "0.0.0.0", "localhost", "127.0.0.1", "www.kixkstxrt.store", "kixkstxrt.store"]
 
-# CSRF_TRUSTED_ORIGINS = ['https://kixkstxrt.store', 'https://www.kixkstxrt.store']
+CSRF_TRUSTED_ORIGINS = ['https://kixkstxrt.store', 'https://www.kixkstxrt.store']
 
 # Application definition
 
