@@ -21,11 +21,11 @@
 
   <!-- Load fonts style after rendering the layout styles -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;700;900&display=swap">
-  <link rel="stylesheet" href="{% static 'fontawesome.min.css' %} ">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   {% comment %} RazorPay {% endcomment %}
   {% comment %} <script src="{% static 'js/checkout.js' %}"></script> {% endcomment %}
-  <script src="{% static 'js/payment.js' %}"></script>
+  <script src="{% static 'payment.js' %}"></script>
 </head>
  
 
@@ -178,7 +178,7 @@
 <script src="https://www.paypal.com/sdk/js?client-id=AShn40Fb_4dIhXOVfYkbn6kDhmAI5iWBBVrXvzTNws_hwWxsgxZX_bbbSol6Dnd3P4f6EpCOjIf40Yaz&currency=USD"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
-<script src="{% static 'js/payment.js' %}"></script>
+<script src="{% static 'payment.js' %}"></script>
 <script>
   paypal.Buttons({
     //onclick: function(data, actions) {
