@@ -88,16 +88,18 @@ def signup(request):
         user_id = User.objects.get(username=username)
         account = Accounts.objects.create(user=user_id, phone=phone)
         account.save()
-        guest = Guest.objects.get(user_id=id)
-        guest.delete()
+        # guest = Guest.objects.get(user_id=id)
+        # guest.delete()
         print('user created')
         return render(request,'loginpage.html')
 
     elif request.method == 'POST':
-        phone = request.POST['phone']
+        phone = int(request.POST['phone'])
         otp1 =int( request.POST['otp'])
         global generatedotp
         print(otp1)
+        print(generatedotp)
+        print(phone)
         if generatedotp == otp1:
             return render(request, "signup.html",{ 'phone': phone})
         else:
@@ -148,7 +150,7 @@ def getotp(request):
 # Login via OTP    
 @never_cache
 def otplogin(request,uid):
-    if request.user.is_authenticated and request.user.is_superuser == False:
+    if request.user.is_authenticated and request.user.is_superuser == False and request.user.first_name !='':
         return redirect('home')
     if request.method == 'POST':
         otp=request.POST.get('otp')

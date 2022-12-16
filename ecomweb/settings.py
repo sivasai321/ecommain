@@ -33,14 +33,14 @@ SECRET_KEY = config('SECRET_KEY')
 # DEBUG = config('DEBUG',default=False,cast=bool)
 DEBUG  = True
 
-ALLOWED_HOSTS = ["3.7.59.116", "0.0.0.0", "localhost", "127.0.0.1", "www.kixkstxrt.store", "kixkstxrt.store"]
+ALLOWED_HOSTS = ["3.7.59.116", "0.0.0.0", "localhost", "127.0.0.1", "www.kixkstxrt.store", "kixkstxrt.store,'http://kixkstxrt.store/'"]
 
 CSRF_TRUSTED_ORIGINS = ['https://kixkstxrt.store', 'https://www.kixkstxrt.store']
 
 # Application definition
 
 INSTALLED_APPS = [
-    "whitenoise",
+    'whitenoise',
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'django.contrib.auth',

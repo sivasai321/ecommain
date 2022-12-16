@@ -36,8 +36,6 @@
                 placeholder=" Enter OTP" onkeyup="validateotp()" />
                 <input type="hidden" name="phone" value= "{{phone}}" id="phone">
                 <div id="otp-error" class="form-group "></div>
-{{generatedotp}}:{{otp}}
-              
                 {%for message in messages%}
                 <h5 class="text-danger">{{message}}</h5>
                 {% endfor %}           
