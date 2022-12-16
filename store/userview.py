@@ -94,7 +94,7 @@ def signup(request):
         return render(request,'loginpage.html')
 
     elif request.method == 'POST':
-        phone = int(request.POST['phone'])
+        phone = request.POST['phone']
         otp1 =int( request.POST['otp'])
         global generatedotp
         print(otp1)
