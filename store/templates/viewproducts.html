@@ -7,7 +7,7 @@
 {% comment %} 
     <link rel="stylesheet" href="{% static 'css/zoom.css' %}" /> {% endcomment %}
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-    <script src="{% static 'js/zoomsl.min.js' %}"></script>
+    <script src="{% static 'zoomsl.min.js' %}"></script>
     <!-- Load fonts style after rendering the layout styles -->
     <link
       rel="stylesheet"
@@ -108,7 +108,7 @@
                 <h6>Description</h6>
                 <p class="list-unstyled pb-3">{{product.description}}</p>
                 {% if offer_product %}
-                <div class="price"><span class="text-danger"> {{offer_product.offer}} % off  upto <i class="fa fa-rupee text-success"></i class ="text-danger">&nbsp;₹{{offer_product.max_value}}/-</span></div>
+                <div class="price"><span class="text-danger"> {{offer_product.offer}} % off  upto <i class="fa fa-rupee text-danger"></i class ="text-danger">&nbsp;₹{{offer_product.max_value}}/-</span></div>
                 {% endif %}
                 {% if offer_category %}
                 <div><span class="text-success">{{offer_category.offer}}% off  upto <i class="fa fa-rupee text-success"></i>&nbsp;₹{{offer_category.max_value}}/-</span></div>
@@ -161,8 +161,7 @@
 
      
     </script>
-    <script src="{% static 'jquery-1.11.0.min.js' %} "></script>
-    <script src="{% static 'jquery-migrate-1.2.1.min.js'%} "></script>
+   
     <script src="{% static 'bootstrap.bundle.min.js' %} "></script>
     <script src="{% static 'templatemo.js' %}"></script>
     <script src="{% static 'custom.js' %}"></script>
